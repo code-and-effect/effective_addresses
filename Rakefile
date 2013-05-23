@@ -6,7 +6,7 @@ rescue LoadError
 end
 
 # Our tasks
-load 'lib/tasks/tasks.rake'
+load 'lib/tasks/effective_addresses_tasks.rake'
 
 # Testing tasks
 APP_RAKEFILE = File.expand_path("../spec/dummy/Rakefile", __FILE__)

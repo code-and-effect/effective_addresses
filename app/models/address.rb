@@ -1,4 +1,4 @@
-require 'migrant'  # This is required here for rspec to run properly
+#require 'migrant'  # This is required here for rspec to run properly
 
 class Address < ActiveRecord::Base
   belongs_to :addressable, :polymorphic => true, :touch => true
