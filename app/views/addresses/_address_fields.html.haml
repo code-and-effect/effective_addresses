@@ -1,4 +1,4 @@
-= f.inputs :name => name, :for => [method, f.object.send(method) || (f.object.addresses.build(:category => category) rescue Address.new(:category => category))] do |fa|
+= f.inputs :name => name, :for => [method, f.object.send(method) || (f.object.addresses.build(:category => category) rescue Effective::Address.new(:category => category))] do |fa|
   - if f.object.errors.include?(method) and !f.object.errors.include?(:addresses)
     %p.inline-errors= f.object.errors[method].first
 

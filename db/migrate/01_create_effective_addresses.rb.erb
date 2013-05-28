@@ -1,6 +1,6 @@
 class CreateEffectiveAddresses < ActiveRecord::Migration
   def self.up
-    create_table :addresses do |t|
+    create_table <%= @address_table_name %> do |t|
       t.string :addressable_type
       t.integer :addressable_id
       t.string :category, :limit => 64
@@ -14,11 +14,11 @@ class CreateEffectiveAddresses < ActiveRecord::Migration
       t.datetime :updated_at
       t.datetime :created_at
     end
-    add_index :addresses, [:addressable_type, :addressable_id]
-    add_index :addresses, :addressable_id
+    add_index <%= @address_table_name %>, [:addressable_type, :addressable_id]
+    add_index <%= @address_table_name %>, :addressable_id
   end
 
   def self.down
-    drop_table :addresses
+    drop_table <%= @address_table_name %>
   end
 end

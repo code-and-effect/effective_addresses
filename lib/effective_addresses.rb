@@ -6,6 +6,7 @@ module EffectiveAddresses
 
   # The following are all valid config keys
   mattr_accessor :country_codes
+  mattr_accessor :address_table_name
 
   def self.setup
     yield self

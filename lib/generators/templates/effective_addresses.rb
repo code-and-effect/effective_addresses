@@ -1,5 +1,7 @@
-# EffectiveAddresses Rails Engine
-
 EffectiveAddresses.setup do |config|
-  config.country_codes = %w{US CA}
+  # Database table name to store addresses in.  Default is :addresses
+  # config.address_table_name = :addresses
+
+  # Country codes to display in country_select dropdowns. Default is %w{US, CA}
+  # config.country_codes = %w{US CA}
 end

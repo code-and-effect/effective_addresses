@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'carmen-rails'
 
 describe Effective::Address do
   let(:address) { FactoryGirl.create(:address) }
@@ -27,10 +28,25 @@ describe Effective::Address do
 
   it "should compare details and == to another address" do
     address2 = address.dup
-    address2.save
-
     address.should == address2
+  end
 
+  it 'should return the country name when given the country code' do
+    address.country_code = 'CA'
+    address.country.should eq 'Canada'
+
+    address.country_code = 'US'
+    address.country.should eq 'United States'
+  end
+
+  it 'should return the appropriate province when country code is set' do
+    address.country_code = 'CA'
+    address.state_code = 'AB'
+    address.state.should eq 'Alberta'
+
+    address.country_code = 'US'
+    address.state_code = 'NY'
+    address.state.should eq 'New York'
   end
 
 end
