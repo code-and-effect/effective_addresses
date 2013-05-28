@@ -20,7 +20,7 @@ module EffectiveAddresses
       end
 
       def create_migration_file
-        @address_table_name = ':' + EffectiveAddresses.address_table_name.to_s
+        @addresses_table_name = ':' + EffectiveAddresses.addresses_table_name.to_s
         migration_template '../../../db/migrate/01_create_effective_addresses.rb.erb', 'db/migrate/create_effective_addresses.rb'
       end
 

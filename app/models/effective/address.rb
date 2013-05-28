@@ -2,7 +2,7 @@ require 'carmen'
 
 module Effective
   class Address < ActiveRecord::Base
-    self.table_name = EffectiveAddresses.address_table_name.to_s
+    self.table_name = EffectiveAddresses.addresses_table_name.to_s
 
     belongs_to :addressable, :polymorphic => true, :touch => true
 
