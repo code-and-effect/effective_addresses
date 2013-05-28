@@ -27,6 +27,8 @@ module ActsAsAddressable
 
   included do
     has_many :addresses, :as => :addressable, :class_name => "Address", :dependent => :delete_all
+
+    validates_with BillingAddressValidator if @acts_as_addressable_opts[:require_billing]
   end
 
   module ClassMethods

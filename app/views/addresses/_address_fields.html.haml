@@ -1,6 +1,4 @@
 = f.inputs :name => name, :for => [method, f.object.send(method) || (f.object.addresses.build(:category => category) rescue Address.new(:category => category))] do |fa|
-  = fa.input :category, :as => :hidden
-
   - if f.object.errors.include?(method) and !f.object.errors.include?(:addresses)
     %p.inline-errors= f.object.errors[method].first
 
@@ -28,3 +26,4 @@
       :input_html => {:disabled => 'disabled', 'data-behavior' => 'address-state'}
 
   = fa.input :postal_code, :label => "Zip / Postal code", :placeholder => "e.g. A1B 2C3"
+  = fa.input :category, :as => :hidden

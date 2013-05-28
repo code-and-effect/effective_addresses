@@ -1,5 +1,3 @@
-#require 'migrant'  # This is required here for rspec to run properly
-
 class Address < ActiveRecord::Base
   belongs_to :addressable, :polymorphic => true, :touch => true
 
@@ -16,19 +14,10 @@ class Address < ActiveRecord::Base
     timestamps
   end
 
-  class << self
-    def default_scope
-      order(:updated_at)
-    end
+  default_scope order(:updated_at)
 
-    def billing_addresses
-      where(:category => 'billing')
-    end
-
-    def shipping_addresses
-      where(:category => 'shipping')
-    end
-  end
+  scope :billing_addresses, -> { where(:category => 'billing') }
+  scope :shipping_addresses, -> { where(:category => 'shipping') }
 
   def first_name
     full_name.split(' ').first rescue full_name
