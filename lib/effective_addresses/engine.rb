@@ -21,7 +21,7 @@ module EffectiveAddresses
     # Set up our default configuration options.
     initializer "effective_addresses.defaults", :before => :load_config_initializers do |app|
       EffectiveAddresses.setup do |config|
-        config.address_table_name = :addresses
+        config.addresses_table_name = :addresses
         config.country_codes = %w{US CA}
       end
     end
