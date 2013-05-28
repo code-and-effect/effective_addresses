@@ -3,12 +3,11 @@ module EffectiveAddresses
     engine_name 'effective_addresses'
 
     config.autoload_paths += Dir["#{config.root}/app/models/concerns"]
-    config.autoload_paths += Dir["#{config.root}/app/models/validators"]
 
     # Include Helpers to base application
     initializer 'effective_addresses.action_controller' do |app|
       ActiveSupport.on_load :action_controller do
-        helper AddressHelper
+        helper EffectiveAddressesHelper
       end
     end
 

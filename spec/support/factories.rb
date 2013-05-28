@@ -1,7 +1,7 @@
 require 'factory_girl'
 
 FactoryGirl.define do
-  factory :address do
+  factory :address, :class => Effective::Address do
     category 'shipping'
     full_name 'Peter Pan'
     sequence(:address1) { |n| "1234#{n} Fake Street" }

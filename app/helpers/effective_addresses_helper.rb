@@ -1,6 +1,6 @@
 require 'carmen-rails'
 
-module AddressHelper
+module EffectiveAddressesHelper
   def address_fields(form, options = {})
     opts = {:f => form, :category => 'address', :skip_full_name => false}.merge(options)
 

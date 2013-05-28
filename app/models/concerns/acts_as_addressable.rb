@@ -26,9 +26,9 @@ module ActsAsAddressable
   end
 
   included do
-    has_many :addresses, :as => :addressable, :class_name => "Address", :dependent => :delete_all
+    has_many :addresses, :as => :addressable, :class_name => "Effective::Address", :dependent => :delete_all
 
-    validates_with BillingAddressValidator if @acts_as_addressable_opts[:require_billing]
+    validates_with Effective::BillingAddressValidator if @acts_as_addressable_opts[:require_billing]
   end
 
   module ClassMethods
@@ -43,7 +43,7 @@ module ActsAsAddressable
   end
 
   def address=(address_atts)
-    add = (address_atts.kind_of?(Address) ? address_atts.dup : Address.new(address_atts))
+    add = (address_atts.kind_of?(Effective::Address) ? address_atts.dup : Effective::Address.new(address_atts))
     add.category = 'address'
     addresses << add if !add.empty? and !(add == address)
   end
@@ -57,7 +57,7 @@ module ActsAsAddressable
   end
 
   def shipping_address=(address_atts)
-    add = (address_atts.kind_of?(Address) ? address_atts.dup : Address.new(address_atts))
+    add = (address_atts.kind_of?(Effective::Address) ? address_atts.dup : Effective::Address.new(address_atts))
     add.category = 'shipping'
     addresses << add if !add.empty? and !(add == shipping_address)
   end
@@ -71,7 +71,7 @@ module ActsAsAddressable
   end
 
   def billing_address=(address_atts)
-    add = (address_atts.kind_of?(Address) ? address_atts.dup : Address.new(address_atts))
+    add = (address_atts.kind_of?(Effective::Address) ? address_atts.dup : Effective::Address.new(address_atts))
     add.category = 'billing'
     addresses << add if !add.empty? and !(add == billing_address)
   end
@@ -85,7 +85,7 @@ module ActsAsAddressable
   end
 
   def primary_address=(address_atts)
-    add = (address_atts.kind_of?(Address) ? address_atts.dup : Address.new(address_atts))
+    add = (address_atts.kind_of?(Effective::Address) ? address_atts.dup : Effective::Address.new(address_atts))
     add.category = 'primary'
     addresses << add if !add.empty? and !(add == primary_address)
   end
@@ -99,7 +99,7 @@ module ActsAsAddressable
   end
 
   def secondary_address=(address_atts)
-    add = (address_atts.kind_of?(Address) ? address_atts.dup : Address.new(address_atts))
+    add = (address_atts.kind_of?(Effective::Address) ? address_atts.dup : Effective::Address.new(address_atts))
     add.category = 'secondary'
     addresses << add if !add.empty? and !(add == secondary_address)
   end

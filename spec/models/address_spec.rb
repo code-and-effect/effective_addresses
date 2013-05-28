@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Address do
+describe Effective::Address do
   let(:address) { FactoryGirl.create(:address) }
 
   it "should be valid" do
