@@ -3,6 +3,7 @@ module EffectiveAddresses
     engine_name 'effective_addresses'
 
     config.autoload_paths += Dir["#{config.root}/app/models/concerns"]
+    config.autoload_paths += Dir["#{config.root}/app/models/validators"]
 
     # Include Helpers to base application
     initializer 'effective_addresses.action_controller' do |app|
@@ -20,10 +21,7 @@ module EffectiveAddresses
 
     # Set up our default configuration options.
     initializer "effective_addresses.defaults", :before => :load_config_initializers do |app|
-      EffectiveAddresses.setup do |config|
-        config.addresses_table_name = :addresses
-        config.country_codes = %w{US CA}
-      end
+      eval File.read("#{config.root}/lib/generators/templates/effective_addresses.rb")
     end
 
   end
