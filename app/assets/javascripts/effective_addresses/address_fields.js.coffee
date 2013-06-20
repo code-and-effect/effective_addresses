@@ -1,7 +1,7 @@
 $(document).on 'change', "select[data-behavior='address-country']", (event) ->
   country_code = $(this).val()
 
-  url = "/address/subregions/#{country_code}"
+  url = "/effective/address/subregions/#{country_code}"
   state_select = $(this).parent().parent().find("li > select[data-behavior='address-state']").first()
 
   if country_code.length == 0

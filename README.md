@@ -111,7 +111,7 @@ Use the helper in a formtastic form to quickly create the address fields 'f.inpu
 Currently only supports Formtastic.
 
 Assuming the javascript has been properly required (as above), when you select a country from the dropdown
-an AJAX GET request will be made to 'address/subregions/:country_code' and populate the state dropdown with the appropriate states or provinces
+an AJAX GET request will be made to '/effective/address/subregions/:country_code' and populate the state dropdown with the appropriate states or provinces
 
 
 ## License
