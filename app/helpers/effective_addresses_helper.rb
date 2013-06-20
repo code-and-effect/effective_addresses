@@ -1,7 +1,7 @@
 require 'carmen-rails'
 
 module EffectiveAddressesHelper
-  def address_fields(form, options = {})
+  def effective_address_fields(form, options = {})
     opts = {:f => form, :category => 'address', :skip_full_name => false}.merge(options)
 
     case opts[:category]
@@ -22,6 +22,6 @@ module EffectiveAddressesHelper
       opts[:method] = :address
     end
 
-    render :partial => 'addresses/address_fields', :locals => opts
+    render :partial => 'effective/addresses/address_fields', :locals => opts
   end
 end

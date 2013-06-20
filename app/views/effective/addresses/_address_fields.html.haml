@@ -11,7 +11,7 @@
   = fa.input :country_code,
     :as => :select,
     :label => 'Country',
-    :collection => region_options_for_select(Carmen::Country.all.select{|c| EffectiveAddresses.country_codes.include?(c.code) rescue true}, fa.object.country_code, :priority => %w()),
+    :collection => region_options_for_select(EffectiveAddresses.country_codes == :all ? Carmen::Country.all : Carmen::Country.all.select{ |c| EffectiveAddresses.country_codes.include?(c.code) rescue true}, fa.object.country_code, :priority => EffectiveAddresses.country_codes_priority),
     :input_html => { 'data-behavior' => 'address-country' }
 
   - if fa.object.country_code.present?
