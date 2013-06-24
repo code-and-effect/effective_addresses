@@ -5,7 +5,7 @@ require "effective_addresses/version"
 
 # Describe your gem and declare its dependencies:
 Gem::Specification.new do |s|
-  s.name        = "Effective Addresses"
+  s.name        = "effective_addresses"
   s.version     = EffectiveAddresses::VERSION
   s.authors     = ["Code and Effect"]
   s.email       = ["info@codeandeffect.com"]
