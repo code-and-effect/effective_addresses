@@ -124,6 +124,17 @@ You are not granted rights or licenses to the trademarks of Code and Effect
 
 This is a work in progress gem.  It needs smarter validations, dynamic methods and google maps integration
 
+### Testing
+
+The test suite for this gem is unfortunately not yet complete.
+
+Run tests by:
+
+```ruby
+rake spec
+```
+
+
 
 
 

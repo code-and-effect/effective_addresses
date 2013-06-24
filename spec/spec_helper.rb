@@ -4,8 +4,6 @@ require File.expand_path("../dummy/config/environment", __FILE__)
 
 require 'rspec/rails'
 require 'rspec/autorun'
-require 'capybara/rspec'
-require 'capybara/poltergeist'
 require 'factory_girl_rails'
 require 'haml'
 
@@ -19,12 +17,6 @@ Carmen.i18n_backend.load_path << (Carmen.root_path.to_s + '/locale/en/world/us.y
 
 RSpec.configure do |config|
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
-
-  config.include Capybara::DSL
-
-  Capybara.current_driver = :poltergeist
-  Capybara.javascript_driver = :poltergeist
-  Capybara.default_wait_time = 5
 
   Rails.logger.level = 4    # Output only minimal stuff to test.log
 
