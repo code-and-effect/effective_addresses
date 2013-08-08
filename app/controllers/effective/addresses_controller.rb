@@ -4,12 +4,12 @@ module Effective
     respond_to :json
 
     def subregions
-      country_code = params[:country_code]
+      @subregions = Carmen::Country.coded(params[:country_code]).try(:subregions)
 
-      if country_code.present?
-        render :partial => 'effective/addresses/subregions', :locals => {:country_code => country_code}
+      if @subregions.present?
+        render :partial => 'effective/addresses/subregions'
       else
-        render :text => '', :status => :unprocessable_entity
+        render :nothing => true, :status => :unprocessable_entity
       end
     end
   end

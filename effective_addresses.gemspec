@@ -29,5 +29,9 @@ Gem::Specification.new do |s|
   s.add_development_dependency "shoulda-matchers"
   s.add_development_dependency "sqlite3"
   s.add_development_dependency "psych"
+
+  s.add_development_dependency "guard"
+  s.add_development_dependency "guard-rspec"
+  s.add_development_dependency "guard-livereload"
 end
 

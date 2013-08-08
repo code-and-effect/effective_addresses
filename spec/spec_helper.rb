@@ -14,6 +14,7 @@ Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f }
 Carmen.i18n_backend.load_path << (Carmen.root_path.to_s + '/locale/en/world.yml')
 Carmen.i18n_backend.load_path << (Carmen.root_path.to_s + '/locale/en/world/ca.yml')
 Carmen.i18n_backend.load_path << (Carmen.root_path.to_s + '/locale/en/world/us.yml')
+Carmen.i18n_backend.load_path << (Carmen.root_path.to_s + '/locale/en/world/sg.yml')
 
 RSpec.configure do |config|
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
