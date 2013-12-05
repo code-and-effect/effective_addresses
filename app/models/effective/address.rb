@@ -7,17 +7,19 @@ module Effective
     belongs_to :addressable, :polymorphic => true, :touch => true
 
     structure do
-      category        :string, :validates => [:presence, :inclusion => { :in => %w(billing shipping primary secondary address)}]
+      category        :string, :validates => [:presence]
 
       full_name       :string, :validates => [:presence]
       address1        :string, :validates => [:presence]
       address2        :string
       city            :string, :validates => [:presence]
-      state_code      :string, :validates => [:presence]
+      state_code      :string
       country_code    :string, :validates => [:presence]
       postal_code     :string, :validates => [:presence]
       timestamps
     end
+
+    validates_presence_of :state_code, :if => Proc.new { |address| address.country_code.blank? || Carmen::Country.coded(address.country_code).try(:subregions).present? }
 
     default_scope order(:updated_at)
 

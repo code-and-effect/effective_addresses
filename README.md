@@ -5,7 +5,7 @@ Such as @user.billing_address and @user.billing_address=
 
 Includes full validations for addresses with multiple categories.
 
-Includes a formtastic helper method to create/update the address of a parent object.
+Includes a formtastic & simpleform helper method to create/update the address of a parent object.
 Uses the Carmen gem so when a Country is selected, an AJAX request populates the State/Province fields as appropriate.
 
 Rails >= 3.2.x, Ruby >= 1.9.x.  Has not been tested/developed for Rails4.
@@ -51,33 +51,35 @@ If you'd like to use the form helper method, require the javascript in your appl
 
 ### Model
 
+To create a address, just add the mixin to your existing model and specify the name of the address
+
 To use without any validations, just add the mixin to your existing model:
 
 ```ruby
 class User
-  acts_as_addressable
+  acts_as_addressable :billing
 end
 ```
+
+Calling @user.billing_address will return a single Effective::Address.  Calling @user.billing_addresses will return an array of Effective:Addresses
 
 This adds the following getters, along with the setters:
 
 ```ruby
-@user.address
 @user.billing_address
-@user.shipping_address
-@user.primary_address
-@user.secondary_address
+@user.billing_address=
+@user.billing_addresses
 ```
 
 You can also define validations as follows:
 
 ```ruby
 class User
-  acts_as_addressable :require_billing => true, :require_shipping => true
+  acts_as_addressable :billing => true, :shipping => false
 end
 ```
 
-This means when a User is created, it will not be valid unless a billing_address and shipping_address exist and are valid.
+This means when a User is created, it will not be valid unless a billing_address exist and is valid.
 
 ### Multiple Addresses
 
@@ -93,22 +95,38 @@ You can find all past addresses (including the current one) by:
 @user.billing_addresses
 ```
 
-### Form Helper
+### Strong Parameters
 
-Use the helper in a formtastic form to quickly create the address fields 'f.inputs'.  This example is in HAML:
+Make your controller aware of the acts_as_addressable passed parameters:
+
+```ruby
+def permitted_params
+  params.require(:base_object).permit(
+    :billing_address => [:full_name, :address1, :address2, :city, :country_code, :state_code, :postal_code],
+    :shipping_address => [:full_name, :address1, :address2, :city, :country_code, :state_code, :postal_code]
+  )
+end
+```
+
+### Helpers
+
+Use the helper in a formtastic or simpleform form to quickly create the address fields.  This example is in HAML:
 
 ```ruby
 = semantic_form_for @user do |f|
-  = f.inputs :name => "Your Information" do
-    = f.input :email
-    = f.input :name
-
-  = effective_address_fields(f, :category => 'billing') # 'shipping', 'primary', 'secondary'
+  %h3 Billing Address
+  = effective_address_fields(f, :billing_address)
 
   = f.action :submit
+
+= simple_form_for @user do |f|
+  %h3 Billing Address
+  = effective_address_fields(f, :billing_address)
+
+  = f.submit 'Save'
 ```
 
-Currently only supports Formtastic.
+Currently only supports Formtastic and SimpleForm.
 
 Assuming the javascript has been properly required (as above), when you select a country from the dropdown
 an AJAX GET request will be made to '/effective/address/subregions/:country_code' and populate the state dropdown with the appropriate states or provinces

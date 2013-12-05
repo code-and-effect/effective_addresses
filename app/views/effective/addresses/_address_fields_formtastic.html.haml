@@ -1,5 +1,6 @@
-= f.inputs :name => name, :for => [method, f.object.send(method) || (f.object.addresses.build(:category => category) rescue Effective::Address.new(:category => category))] do |fa|
-  - if f.object.errors.include?(method) and !f.object.errors.include?(:addresses)
+= f.semantic_fields_for method, f.object.send(method) || f.object.addresses.build(:category => method.to_s.gsub('_address', '')) do |fa|
+  - uuid = Time.now.to_i + rand(1...1000)
+  - if ((f.object.errors.include?(method) && !f.object.errors.include?(:addresses)) rescue false)
     %p.inline-errors= f.object.errors[method].first
 
   - unless skip_full_name
@@ -11,19 +12,19 @@
   = fa.input :country_code,
     :as => :select,
     :label => 'Country',
+    :prompt => 'Country...',
     :collection => region_options_for_select(EffectiveAddresses.country_codes == :all ? Carmen::Country.all : Carmen::Country.all.select{ |c| EffectiveAddresses.country_codes.include?(c.code) rescue true}, fa.object.country_code, :priority => EffectiveAddresses.country_codes_priority),
-    :input_html => { 'data-behavior' => 'address-country' }
+    :input_html => { 'data-effective-address-country' => uuid }
 
   - if fa.object.country_code.present?
     = fa.input :state_code, :as => :select, :label => "State / Province",
       :collection => region_options_for_select(Carmen::Country.coded(fa.object.country_code).subregions, fa.object.state_code),
       :prompt => 'please select a country',
-      :input_html => { 'data-behavior' => 'address-state' }
+      :input_html => { 'data-effective-address-state' => uuid }
   - else
     = fa.input :state_code, :as => :select, :label => "State / Province",
       :collection => [],
       :prompt => 'please select a country',
-      :input_html => {:disabled => 'disabled', 'data-behavior' => 'address-state'}
+      :input_html => {:disabled => 'disabled', 'data-effective-address-state' => uuid}
 
   = fa.input :postal_code, :label => "Zip / Postal code", :placeholder => "e.g. A1B 2C3"
-  = fa.input :category, :as => :hidden

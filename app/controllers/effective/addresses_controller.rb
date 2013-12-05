@@ -9,7 +9,7 @@ module Effective
       if @subregions.present?
         render :partial => 'effective/addresses/subregions'
       else
-        render :nothing => true, :status => :unprocessable_entity
+        render :text => "<option value=''>None Available</option>"
       end
     end
   end

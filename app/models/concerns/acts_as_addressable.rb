@@ -1,19 +1,4 @@
 # ActsAsAddressable
-#
-# This module creates .billing_address, .shipping_address and .address methods
-# it tricks a has_many relationship into singleton methods
-#
-# Mark your model with 'acts_as_addressable'
-#
-# there are no additional migrations needed for this module to work.
-#
-# By default, addresses are NOT required
-#
-# If you want to validate presence, please mark your model
-# acts_as_addressable :billing => true, :shipping => false
-#
-# Please see app/views/admin/users/_form.html.haml for an example of how to use this in a formtastic form
-#
 
 module ActsAsAddressable
   extend ActiveSupport::Concern
