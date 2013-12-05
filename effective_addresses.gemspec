@@ -20,9 +20,9 @@ Gem::Specification.new do |s|
   s.add_dependency "carmen"
   s.add_dependency "carmen-rails"
   s.add_dependency "coffee-rails"
-  s.add_dependency "formtastic"
   s.add_dependency "haml"
   s.add_dependency "migrant"
+  s.add_dependency "simple_form"
 
   s.add_development_dependency "factory_girl_rails"
   s.add_development_dependency "rspec-rails"

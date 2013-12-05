@@ -1,27 +1,12 @@
 require 'carmen-rails'
 
 module EffectiveAddressesHelper
-  def effective_address_fields(form, options = {})
-    opts = {:f => form, :category => 'address', :skip_full_name => false}.merge(options)
+  def effective_address_fields(form, method = 'billing', options = {})
+    method = (method.to_s.include?('_address') ? method.to_s : "#{method}_address")
 
-    case opts[:category]
-    when 'shipping'
-      opts[:name] = 'Shipping Address'
-      opts[:method] = :shipping_address
-    when 'billing'
-      opts[:name] = 'Billing Address'
-      opts[:method] = :billing_address
-    when 'primary'
-      opts[:name] = 'Primary Address'
-      opts[:method] = :primary_address
-    when 'secondary'
-      opts[:name] = 'Secondary Address'
-      opts[:method] = :secondary_address
-    else
-      opts[:name] = 'Address'
-      opts[:method] = :address
-    end
+    opts = {:f => form, :method => method, :skip_full_name => false}.merge(options)
 
     render :partial => 'effective/addresses/address_fields', :locals => opts
   end
 end
+

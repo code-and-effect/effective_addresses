@@ -10,7 +10,7 @@
 # By default, addresses are NOT required
 #
 # If you want to validate presence, please mark your model
-# acts_as_addressable :require_billing => true, :require_address => true, :require_shipping => true
+# acts_as_addressable :billing => true, :shipping => false
 #
 # Please see app/views/admin/users/_form.html.haml for an example of how to use this in a formtastic form
 #
@@ -19,8 +19,8 @@ module ActsAsAddressable
   extend ActiveSupport::Concern
 
   module ActiveRecord
-    def acts_as_addressable(options = {})
-      @acts_as_addressable_opts = {:require_shipping => false, :require_billing => false, :require_primary => false, :require_secondary => false, :require_address => false}.merge(options)
+    def acts_as_addressable(*options)
+      @acts_as_addressable_opts = options || []
       include ::ActsAsAddressable
     end
   end
@@ -28,80 +28,53 @@ module ActsAsAddressable
   included do
     has_many :addresses, :as => :addressable, :class_name => "Effective::Address", :dependent => :delete_all
 
-    validates_with BillingAddressValidator if @acts_as_addressable_opts[:require_billing]
+    # Setup validations and methods
+    categories = @acts_as_addressable_opts.try(:flatten) || []
+    if categories.first.kind_of?(Hash) # We were passed some validation requirements
+      categories = categories.first
+
+      categories.each do |category, validation| # billing, shipping
+        category = category.to_s.gsub('_address', '')
+
+        self.send(:define_method, "#{category}_address") { effective_address(category) }
+        self.send(:define_method, "#{category}_addresses") { effective_addresses(category) }
+        self.send(:define_method, "#{category}_address=") { |atts| set_effective_address(category, atts) }
+
+        validates "#{category}_address", :effective_address_valid => true
+
+        if validation == true
+          validates "#{category}_address", :effective_address_presence => true
+        end
+      end
+    else
+      categories.each do |category|
+        category = category.to_s.gsub('_address', '')
+
+        self.send(:define_method, "#{category}_address") { effective_address(category) }
+        self.send(:define_method, "#{category}_addresses") { effective_addresses(category) }
+        self.send(:define_method, "#{category}_address=") { |atts| set_effective_address(category, atts) }
+
+        validates "#{category}_address", :effective_address_valid => true
+      end
+    end
   end
 
   module ClassMethods
   end
 
-  def single_addresses
-    addresses.select { |address| address.category == 'address' }
+  def effective_addresses(category)
+    addresses.select { |address| address.category == category.to_s }
   end
 
-  def address
-    single_addresses.last
+  def effective_address(category)
+    effective_addresses(category).last
   end
 
-  def address=(address_atts)
-    add = (address_atts.kind_of?(Effective::Address) ? address_atts.dup : Effective::Address.new(address_atts))
-    add.category = 'address'
-    addresses << add if !add.empty? and !(add == address)
+  def set_effective_address(category, atts)
+    add = (atts.kind_of?(Effective::Address) ? atts.dup : Effective::Address.new(atts))
+    add.category = category.to_s
+    self.addresses << add unless (add.empty? || add == effective_address(category))
   end
 
-  def shipping_addresses
-    addresses.select { |address| address.category == 'shipping' }
-  end
-
-  def shipping_address
-    shipping_addresses.last
-  end
-
-  def shipping_address=(address_atts)
-    add = (address_atts.kind_of?(Effective::Address) ? address_atts.dup : Effective::Address.new(address_atts))
-    add.category = 'shipping'
-    addresses << add if !add.empty? and !(add == shipping_address)
-  end
-
-  def billing_addresses
-    addresses.select { |address| address.category == 'billing' }
-  end
-
-  def billing_address
-    billing_addresses.last
-  end
-
-  def billing_address=(address_atts)
-    add = (address_atts.kind_of?(Effective::Address) ? address_atts.dup : Effective::Address.new(address_atts))
-    add.category = 'billing'
-    addresses << add if !add.empty? and !(add == billing_address)
-  end
-
-  def primary_addresses
-    addresses.select { |address| address.category == 'primary' }
-  end
-
-  def primary_address
-    primary_addresses.last
-  end
-
-  def primary_address=(address_atts)
-    add = (address_atts.kind_of?(Effective::Address) ? address_atts.dup : Effective::Address.new(address_atts))
-    add.category = 'primary'
-    addresses << add if !add.empty? and !(add == primary_address)
-  end
-
-  def secondary_addresses
-    addresses.select { |address| address.category == 'secondary' }
-  end
-
-  def secondary_address
-    secondary_addresses.last
-  end
-
-  def secondary_address=(address_atts)
-    add = (address_atts.kind_of?(Effective::Address) ? address_atts.dup : Effective::Address.new(address_atts))
-    add.category = 'secondary'
-    addresses << add if !add.empty? and !(add == secondary_address)
-  end
 end
 

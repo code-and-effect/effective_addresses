@@ -26,3 +26,4 @@ module EffectiveAddresses
 
   end
 end
+

@@ -21,8 +21,8 @@ module Effective
 
     default_scope order(:updated_at)
 
-    scope :billing_addresses, -> { where(:category => 'billing') }
-    scope :shipping_addresses, -> { where(:category => 'shipping') }
+    scope :billing, -> { where(:category => 'billing') }
+    scope :shipping, -> { where(:category => 'shipping') }
 
     def first_name
       full_name.split(' ').first rescue full_name
@@ -67,7 +67,7 @@ module Effective
       self_attrs = self.attributes
       other_attrs = other_address.respond_to?(:attributes) ? other_address.attributes : {}
 
-      [self_attrs, other_attrs].each { |attrs| attrs.except!('id', 'created_at', 'updated_at', 'addressable_type', 'addressable_id', 'address2') }
+      [self_attrs, other_attrs].each { |attrs| attrs.except!('id', 'created_at', 'updated_at', 'addressable_type', 'addressable_id') }
 
       self_attrs == other_attrs
     end
