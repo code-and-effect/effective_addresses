@@ -8,14 +8,14 @@ Includes full validations for addresses with multiple categories.
 Includes a formtastic & simpleform helper method to create/update the address of a parent object.
 Uses the Carmen gem so when a Country is selected, an AJAX request populates the State/Province fields as appropriate.
 
-Rails >= 3.2.x, Ruby >= 1.9.x.  Has not been tested/developed for Rails4.
+Rails 3.2.x and Rails 4 Support
 
 ## Getting Started
 
 Add to your Gemfile:
 
 ```ruby
-gem 'effective_addresses'
+gem 'effective_addresses', :git => 'https://github.com/code-and-effect/effective_addresses'
 ```
 
 Run the bundle command to install it:
