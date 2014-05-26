@@ -3,8 +3,8 @@
   - if ((f.object.errors.include?(method) && !f.object.errors.include?(:addresses)) rescue false)
     %p.inline-errors= f.object.errors[method].first
 
-  - unless skip_full_name
-    = fa.input :full_name
+  - if f.object._validators[method].any? { |v| v.kind_of?(EffectiveAddressFullNamePresenceValidator) }
+    = fa.input :full_name, :required => true
 
   = fa.input :address1, :placeholder => "e.g. Asphalt Road", :label => "Address 1"
   = fa.input :address2, :label => "Address 2"

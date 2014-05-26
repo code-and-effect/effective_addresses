@@ -27,9 +27,14 @@ module ActsAsAddressable
 
         validates "#{category}_address", :effective_address_valid => true
 
-        if validation == true
+        if validation.kind_of?(Hash)
+          validates "#{category}_address", :effective_address_presence => validation[:presence]
+          validates "#{category}_address", :effective_address_full_name_presence => validation[:use_full_name]
+        elsif validation == true
           validates "#{category}_address", :effective_address_presence => true
+          validates "#{category}_address", :effective_address_full_name_presence => EffectiveAddresses.use_full_name
         end
+
       end
     else
       categories.each do |category|
@@ -40,6 +45,8 @@ module ActsAsAddressable
         self.send(:define_method, "#{category}_address=") { |atts| set_effective_address(category, atts) }
 
         validates "#{category}_address", :effective_address_valid => true
+        validates "#{category}_address", :effective_address_full_name_presence => EffectiveAddresses.use_full_name
+
       end
     end
   end

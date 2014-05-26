@@ -71,7 +71,7 @@ This adds the following getters, along with the setters:
 @user.billing_addresses
 ```
 
-You can also define validations as follows:
+Using the effective_addresses.config.full_name value from the initializer, you can also define validations, simply, as follows:
 
 ```ruby
 class User
@@ -80,6 +80,15 @@ end
 ```
 
 This means when a User is created, it will not be valid unless a billing_address exist and is valid.
+
+Or you can define validations, with a bit more detail, as follows:
+
+```ruby
+class User
+  acts_as_addressable :billing => {:presence => true, :use_full_name => false}
+end
+```
+
 
 ### Multiple Addresses
 

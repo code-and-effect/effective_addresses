@@ -9,7 +9,7 @@ module Effective
     structure do
       category        :string, :validates => [:presence]
 
-      full_name       :string, :validates => [:presence]
+      full_name       :string
       address1        :string, :validates => [:presence]
       address2        :string
       city            :string, :validates => [:presence]
@@ -21,7 +21,7 @@ module Effective
 
     validates_presence_of :state_code, :if => Proc.new { |address| address.country_code.blank? || Carmen::Country.coded(address.country_code).try(:subregions).present? }
 
-    default_scope order(:updated_at)
+    default_scope -> { order(:updated_at) }
 
     scope :billing, -> { where(:category => 'billing') }
     scope :shipping, -> { where(:category => 'shipping') }
@@ -77,15 +77,16 @@ module Effective
     # An address may be set with a category but nothing else
     # This is considered empty
     def empty?
-      !full_name.present? and !address1.present? and !address2.present? and !city.present? and !state_code.present? and !country_code.present? and !postal_code.present?
+      !address1.present? and !address2.present? and !city.present? and !state_code.present? and !country_code.present? and !postal_code.present?
     end
 
     def to_s
-      output = "#{full_name}\n"
-      output += "#{address1}\n"
+      output = ''
+      output += "#{full_name}\n" if full_name.present?
+      output += "#{address1}\n" if address1.present?
       output += "#{address2}\n" if address2.present?
-      output += "#{city}, #{state}\n"
-      output += "#{country}, #{postal_code}"
+      output += "#{city}, #{state}\n" if city.present? && state.present?
+      output += "#{country}, #{postal_code}" if country.present?
     end
 
     def to_html
