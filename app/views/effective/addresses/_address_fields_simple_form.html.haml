@@ -1,5 +1,5 @@
 = f.simple_fields_for method, f.object.send(method) || f.object.addresses.build(:category => method.to_s.gsub('_address', '')) do |fa|
-  - uuid = Time.now.to_i + rand(1...1000)
+  - uuid = fa.object_id
   - if ((f.object.errors.include?(method) && !f.object.errors.include?(:addresses)) rescue false)
     %p.inline-errors= f.object.errors[method].first
 
@@ -10,7 +10,7 @@
   = fa.input :address2, :label => "Address 2"
   = fa.input :city, :placeholder => "e.g. Edmonton"
   = fa.input :country_code, :label => 'Country', :prompt => 'Country...' do
-    = fa.select :country_code, region_options_for_select(EffectiveAddresses.country_codes == :all ? Carmen::Country.all : Carmen::Country.all.select{ |c| EffectiveAddresses.country_codes.include?(c.code) rescue true}, fa.object.try(:country_code), :priority => ['CA', 'US'] || EffectiveAddresses.country_codes_priority), {:prompt => 'Select Country...'}, {'data-effective-address-country' => uuid}
+    = fa.select :country_code, region_options_for_select(EffectiveAddresses.country_codes == :all ? Carmen::Country.all : Carmen::Country.all.select{ |c| EffectiveAddresses.country_codes.include?(c.code) rescue true}, fa.object.try(:country_code), :priority => EffectiveAddresses.country_codes_priority), {:prompt => 'Select Country...'}, {'data-effective-address-country' => uuid}
 
   - if fa.object.try(:country_code).present?
     = fa.input :state_code, :as => :select, :label => "State / Province", :prompt => 'Please select a country' do

@@ -1,5 +1,5 @@
 = f.semantic_fields_for method, f.object.send(method) || f.object.addresses.build(:category => method.to_s.gsub('_address', '')) do |fa|
-  - uuid = Time.now.to_i + rand(1...1000)
+  - uuid = fa.object_id
   - if ((f.object.errors.include?(method) && !f.object.errors.include?(:addresses)) rescue false)
     %p.inline-errors= f.object.errors[method].first
 
