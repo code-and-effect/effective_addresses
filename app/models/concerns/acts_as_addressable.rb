@@ -34,7 +34,6 @@ module ActsAsAddressable
           validates "#{category}_address", :effective_address_presence => true
           validates "#{category}_address", :effective_address_full_name_presence => EffectiveAddresses.use_full_name
         end
-
       end
     else
       categories.each do |category|
@@ -46,7 +45,6 @@ module ActsAsAddressable
 
         validates "#{category}_address", :effective_address_valid => true
         validates "#{category}_address", :effective_address_full_name_presence => EffectiveAddresses.use_full_name
-
       end
     end
   end
