@@ -4,11 +4,11 @@
     %p.inline-errors= f.object.errors[method].first
 
   - if f.object._validators[method.to_sym].any? { |v| v.kind_of?(EffectiveAddressFullNamePresenceValidator) }
-    = fa.input :full_name, :required => true
+    = fa.input :full_name, :required => true, :label => 'Full name', :prompt => 'Full name'
 
-  = fa.input :address1, :placeholder => "e.g. Asphalt Road", :label => "Address 1"
-  = fa.input :address2, :label => "Address 2"
-  = fa.input :city, :placeholder => "e.g. Edmonton"
+  = fa.input :address1, :placeholder => 'Address', :label => "Address 1"
+  = fa.input :address2, :label => 'Address 2'
+  = fa.input :city, :placeholder => 'City'
   = fa.input :country_code,
     :as => :select,
     :label => 'Country',
@@ -17,14 +17,14 @@
     :input_html => { 'data-effective-address-country' => uuid }
 
   - if fa.object.country_code.present?
-    = fa.input :state_code, :as => :select, :label => "State / Province",
+    = fa.input :state_code, :as => :select, :label => 'Province / State',
       :collection => region_options_for_select(Carmen::Country.coded(fa.object.country_code).subregions, fa.object.state_code),
       :prompt => 'please select a country',
       :input_html => { 'data-effective-address-state' => uuid }
   - else
-    = fa.input :state_code, :as => :select, :label => "State / Province",
+    = fa.input :state_code, :as => :select, :label => 'Province / State',
       :collection => [],
       :prompt => 'please select a country',
       :input_html => {:disabled => 'disabled', 'data-effective-address-state' => uuid}
 
-  = fa.input :postal_code, :label => "Zip / Postal code", :placeholder => "e.g. A1B 2C3"
+  = fa.input :postal_code, :label => 'Postal / Zip code', :placeholder => 'Postal / Zip code'
