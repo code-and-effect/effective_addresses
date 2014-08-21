@@ -1,4 +1,9 @@
-# These will be just added to the list of routes in the main application
 Rails.application.routes.draw do
-  get 'effective/address/subregions/:country_code' => 'effective/addresses#subregions'
+  mount EffectiveAddresses::Engine => '/', :as => 'effective_addresses'
+end
+
+EffectiveAddresses::Engine.routes.draw do
+  scope :module => 'effective' do
+    match 'addresses/subregions/:country_code', :to => 'addresses#subregions', :as => 'address_subregions', :via => :get
+  end
 end

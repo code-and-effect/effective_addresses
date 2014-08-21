@@ -61,8 +61,21 @@ module ActsAsAddressable
   end
 
   def set_effective_address(category, atts)
-    add = (atts.kind_of?(Effective::Address) ? atts.dup : Effective::Address.new(atts))
-    add.category = category.to_s
+    raise ArgumentError.new("Effective::Address #{category}_address= expecting an Effective::Address or Hash object") unless (atts.kind_of?(Effective::Address) || atts.kind_of?(Hash))
+
+    atts = (atts.kind_of?(Effective::Address) ? atts.attributes : atts)
+
+    add = Effective::Address.new(
+      :category     => category,
+      :full_name    => atts[:full_name],
+      :address1     => atts[:address1],
+      :address2     => atts[:address2],
+      :city         => atts[:city],
+      :state_code   => atts[:state_code],
+      :country_code => atts[:country_code],
+      :postal_code  => atts[:postal_code]
+    )
+
     self.addresses << add unless (add.empty? || add == effective_address(category))
   end
 
