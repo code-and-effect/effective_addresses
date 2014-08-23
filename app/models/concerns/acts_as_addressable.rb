@@ -61,10 +61,9 @@ module ActsAsAddressable
   end
 
   def set_effective_address(category, atts)
-    return unless atts.present?
-    raise ArgumentError.new("Effective::Address #{category}_address= expecting an Effective::Address or Hash object") unless (atts.kind_of?(Effective::Address) || atts.kind_of?(Hash))
+    raise ArgumentError.new("Effective::Address #{category}_address= expecting an Effective::Address or Hash object") unless (atts.kind_of?(Effective::Address) || atts.kind_of?(Hash) || atts == nil)
 
-    atts = (atts.kind_of?(Effective::Address) ? atts.attributes : atts)
+    atts = HashWithIndifferentAccess.new(atts.kind_of?(Effective::Address) ? atts.attributes : atts)
 
     add = Effective::Address.new(
       :category     => category,
