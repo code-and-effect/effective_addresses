@@ -61,6 +61,7 @@ module ActsAsAddressable
   end
 
   def set_effective_address(category, atts)
+    return unless atts.present?
     raise ArgumentError.new("Effective::Address #{category}_address= expecting an Effective::Address or Hash object") unless (atts.kind_of?(Effective::Address) || atts.kind_of?(Hash))
 
     atts = (atts.kind_of?(Effective::Address) ? atts.attributes : atts)
