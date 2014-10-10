@@ -91,6 +91,16 @@ class User
 end
 ```
 
+You can also just do
+
+```ruby
+class User
+  acts_as_addressable :billing
+
+  validates_presence_of :billing_address
+end
+```
+
 
 ### Multiple Addresses
 
@@ -113,10 +123,16 @@ Make your controller aware of the acts_as_addressable passed parameters:
 ```ruby
 def permitted_params
   params.require(:base_object).permit(
-    :billing_address => [:full_name, :address1, :address2, :city, :country_code, :state_code, :postal_code],
-    :shipping_address => [:full_name, :address1, :address2, :city, :country_code, :state_code, :postal_code]
+    :billing_address => EffectiveAddresses.permitted_params,
+    :shipping_address => EffectiveAddresses.permitted_params
   )
 end
+```
+
+The permitted paramaters are:
+
+```ruby
+[:full_name, :address1, :address2, :city, :country_code, :state_code, :postal_code]
 ```
 
 ### Helpers

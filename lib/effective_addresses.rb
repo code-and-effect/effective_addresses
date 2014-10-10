@@ -14,7 +14,7 @@ module EffectiveAddresses
     yield self
   end
 
-  def self.permit_params
+  def self.permitted_params
     [:address1, :address2, :city, :country_code, :state_code, :postal_code, :full_name]
   end
 
