@@ -1,7 +1,6 @@
 = f.simple_fields_for method, f.object.send(method) || f.object.addresses.build(:category => method.to_s.gsub('_address', '')) do |fa|
   - uuid = fa.object_id
-  - if ((f.object.errors.include?(method) && !f.object.errors.include?(:addresses)) rescue false)
-    %p.inline-errors= f.object.errors[method].first
+  - f.object.valid? if f.object.errors.messages.include?(method.to_sym)
 
   - if f.object._validators[method.to_sym].any? { |v| v.kind_of?(EffectiveAddressFullNamePresenceValidator) }
     = fa.input :full_name, :required => true, :label => 'Full name', :prompt => 'Full name'
@@ -9,13 +8,12 @@
   = fa.input :address1, :placeholder => 'Address', :label => 'Address 1'
   = fa.input :address2, :label => 'Address 2'
   = fa.input :city, :placeholder => 'City'
-  = fa.input :country_code, :label => 'Country', :prompt => 'Country...' do
-    = fa.select :country_code, region_options_for_select(EffectiveAddresses.country_codes == :all ? Carmen::Country.all : Carmen::Country.all.select{ |c| EffectiveAddresses.country_codes.include?(c.code) rescue true}, fa.object.try(:country_code), :priority => EffectiveAddresses.country_codes_priority), {:prompt => 'Select Country...'}, {:class => SimpleForm.input_class, 'data-effective-address-country' => uuid, :required => true}
+
+  = fa.input :country_code, :as => :select, :label => 'Country', :prompt => 'Choose country...', :collection => region_options_for_simple_form_select(), :input_html => {'data-effective-address-country' => uuid}
 
   - if fa.object.try(:country_code).present?
-    = fa.input :state_code, :as => :select, :label => 'Province / State', :prompt => 'Please select a country' do
-      = fa.select :state_code, region_options_for_select(Carmen::Country.coded(fa.object.country_code).subregions, fa.object.state_code), {}, {:class => SimpleForm.input_class, 'data-effective-address-state' => uuid}
+    = fa.input :state_code, :as => :select, :label => 'Province / State', :prompt => 'Please choose a country first', :collection => region_options_for_simple_form_select(Carmen::Country.coded(fa.object.country_code).subregions), :input_html => {'data-effective-address-state' => uuid}
   - else
-    = fa.input :state_code, :as => :select, :label => 'Province / State', :disabled => true, :prompt => 'Please select a country', :collection => [], :input_html => { 'data-effective-address-state' => uuid }
+    = fa.input :state_code, :as => :select, :label => 'Province / State', :disabled => true, :prompt => 'Please choose a country', :collection => [], :input_html => { 'data-effective-address-state' => uuid }
 
   = fa.input :postal_code, :label => 'Postal / Zip code', :placeholder => 'Postal / Zip code'

@@ -1,11 +1,13 @@
 # Effective Addresses
 
 Provides helper methods for dealing with a has_many :addresses relationship as a single method.
-Such as @user.billing_address and @user.billing_address=
+
+Creates methods such as @user.billing_address and @user.billing_address=
 
 Includes full validations for addresses with multiple categories.
 
-Includes a formtastic & simpleform helper method to create/update the address of a parent object.
+Includes a Formtastic & SimpleForm helper method to create/update the address of a parent object.
+
 Uses the Carmen gem so when a Country is selected, an AJAX request populates the State/Province fields as appropriate.
 
 Rails 3.2.x and Rails 4 Support
@@ -147,11 +149,8 @@ MIT License.  Copyright Code and Effect Inc. http://www.codeandeffect.com
 
 You are not granted rights or licenses to the trademarks of Code and Effect
 
-## Notes
 
-This is a work in progress gem.  It needs smarter validations, dynamic methods and google maps integration
-
-### Testing
+## Testing
 
 The test suite for this gem is unfortunately not yet complete.
 
