@@ -1,4 +1,4 @@
-= f.simple_fields_for method, f.object.send(method) || f.object.addresses.build(:category => method.to_s.gsub('_address', '')) do |fa|
+= f.simple_fields_for method, (f.object.send(method) || f.object.addresses.build(:category => method.to_s.gsub('_address', ''))), (EffectiveAddresses.simple_form_options || {}) do |fa|
   - uuid = fa.object_id
   - f.object.valid? if f.object.errors.messages.include?(method.to_sym)
 

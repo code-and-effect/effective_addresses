@@ -9,6 +9,7 @@ module EffectiveAddresses
   mattr_accessor :country_codes_priority
   mattr_accessor :addresses_table_name
   mattr_accessor :use_full_name
+  mattr_accessor :simple_form_options
 
   def self.setup
     yield self

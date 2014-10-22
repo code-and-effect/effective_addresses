@@ -12,4 +12,19 @@ EffectiveAddresses.setup do |config|
 
   # Select these countries ontop of the others
   config.country_codes_priority = ['US', 'CA'] # Leave empty array for no priority countries
+
+  # SimpleForm Options
+  # This Hash of options will be passed into any simple_form_for() calls
+  config.simple_form_options = {}
+
+  # config.simple_form_options = {
+  #   :html => {:class => 'form-horizontal'},
+  #   :wrapper => :horizontal_form,
+  #   :wrapper_mappings => {
+  #     :boolean => :horizontal_boolean,
+  #     :check_boxes => :horizontal_radio_and_checkboxes,
+  #     :radio_buttons => :horizontal_radio_and_checkboxes
+  #   }
+  # }
+
 end
