@@ -11,7 +11,7 @@ module ActsAsAddressable
   end
 
   included do
-    has_many :addresses, :as => :addressable, :class_name => "Effective::Address", :dependent => :delete_all
+    has_many :addresses, :as => :addressable, :class_name => 'Effective::Address', :dependent => :delete_all
 
     # Setup validations and methods
     categories = @acts_as_addressable_opts.try(:flatten) || []
@@ -28,10 +28,10 @@ module ActsAsAddressable
         validates "#{category}_address", :effective_address_valid => true
 
         if validation.kind_of?(Hash)
-          validates "#{category}_address", :effective_address_presence => validation[:presence]
+          (validates "#{category}_address", :presence => validation[:presence]) if validation[:presence]
           validates "#{category}_address", :effective_address_full_name_presence => validation[:use_full_name] || EffectiveAddresses.use_full_name
         elsif validation == true
-          validates "#{category}_address", :effective_address_presence => true
+          validates "#{category}_address", :presence => true
           validates "#{category}_address", :effective_address_full_name_presence => EffectiveAddresses.use_full_name
         end
       end
