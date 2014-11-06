@@ -1,6 +1,5 @@
 = f.simple_fields_for method, (f.object.send(method) || f.object.addresses.build(:category => method.to_s.gsub('_address', ''))), (EffectiveAddresses.simple_form_options || {}) do |fa|
   - uuid = fa.object_id
-  - f.object.valid? if f.object.errors.messages.include?(method.to_sym)
 
   - if f.object._validators[method.to_sym].any? { |v| v.kind_of?(EffectiveAddressFullNamePresenceValidator) }
     = fa.input :full_name, :required => true, :label => 'Full name', :prompt => 'Full name'

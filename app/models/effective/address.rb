@@ -41,10 +41,7 @@ module Effective
     def state
       Carmen::Country.coded(country_code).subregions.coded(state_code).name rescue ''
     end
-
-    def province
-      Carmen::Country.coded(country_code).subregions.coded(state_code).name rescue ''
-    end
+    alias_method :province, :state
 
     def country=(country_string)
       value = Carmen::Country.named(country_string) || Carmen::Country.coded(country_string.try(:upcase))
@@ -53,13 +50,14 @@ module Effective
 
     def state=(state_string)
       if country.present?
-        value = Carmen::Country.coded(country_code).subregions.named(state_string) || Carmen::Country.coded(country_code).subregions.coded(state_string.try(:upcase))
+        value = (Carmen::Country.coded(country_code).subregions.named(state_string) rescue nil) || Carmen::Country.coded(country_code).subregions.coded(state_string.try(:upcase))
         self.state_code = value.code if value.present?
       else
         Rails.logger.info 'No country set.  Try calling country= before state='
         puts 'No country set.  Try calling country= before state='
       end
     end
+    alias_method :province=, :state=
 
     def postal_code_looks_canadian?
       postal_code.gsub(/ /, '').strip.match(/^\D{1}\d{1}\D{1}\-?\d{1}\D{1}\d{1}$/).present? rescue false # Matches T5T2T1 or T5T-2T1
@@ -85,8 +83,9 @@ module Effective
       output += "#{full_name}\n" if full_name.present?
       output += "#{address1}\n" if address1.present?
       output += "#{address2}\n" if address2.present?
-      output += "#{city}, #{state}\n" if city.present? && state.present?
-      output += "#{country}, #{postal_code}" if country.present?
+      output += [city.presence, state.presence].compact.join(', ')
+      output += '\n' if city.present? || state.present?
+      output += [country.presence, postal_code.presence].compact.join(', ')
     end
 
     def to_html
