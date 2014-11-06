@@ -50,7 +50,14 @@ module Effective
 
     def state=(state_string)
       if country.present?
-        value = (Carmen::Country.coded(country_code).subregions.named(state_string) rescue nil) || Carmen::Country.coded(country_code).subregions.coded(state_string.try(:upcase))
+        subregions = (Carmen::Country.coded(country_code).subregions rescue nil)
+
+        if subregions.present?
+          value = subregions.named(state_string) || subregions.coded(state_string.try(:upcase))
+        else
+          value = nil
+        end
+
         self.state_code = value.code if value.present?
       else
         Rails.logger.info 'No country set.  Try calling country= before state='
