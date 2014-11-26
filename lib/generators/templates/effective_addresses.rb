@@ -13,6 +13,10 @@ EffectiveAddresses.setup do |config|
   # Select these countries ontop of the others
   config.country_codes_priority = ['US', 'CA'] # Leave empty array for no priority countries
 
+  # Validate that the postal/zip code format is correct for these countries
+  # Right now, only US and Canada are supported
+  config.validate_postal_code_format = ['US', 'CA']
+
   # SimpleForm Options
   # This Hash of options will be passed into any simple_form_for() calls
   config.simple_form_options = {}

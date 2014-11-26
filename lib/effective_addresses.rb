@@ -10,6 +10,7 @@ module EffectiveAddresses
   mattr_accessor :addresses_table_name
   mattr_accessor :use_full_name
   mattr_accessor :simple_form_options
+  mattr_accessor :validate_postal_code_format
 
   def self.setup
     yield self
