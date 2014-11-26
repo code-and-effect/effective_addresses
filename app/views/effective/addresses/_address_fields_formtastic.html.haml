@@ -1,9 +1,11 @@
 = f.semantic_fields_for method, f.object.send(method) || f.object.addresses.build(:category => method.to_s.gsub('_address', '')) do |fa|
   - uuid = fa.object_id
-  - if ((f.object.errors.include?(method) && !f.object.errors.include?(:addresses)) rescue false)
-    %p.inline-errors= f.object.errors[method].first
+  - method = method.to_sym
 
-  - if f.object._validators[method.to_sym].any? { |v| v.kind_of?(EffectiveAddressFullNamePresenceValidator) }
+  - if ((f.object.errors.include?(method) && !f.object.errors.include?(:addresses)) rescue false)
+    - fa.object.errors.add(:address1, f.object.errors[method].first)
+
+  - if f.object._validators[method].any? { |v| v.kind_of?(EffectiveAddressFullNamePresenceValidator) }
     = fa.input :full_name, :required => true, :label => 'Full name', :prompt => 'Full name'
 
   = fa.input :address1, :placeholder => 'Address', :label => "Address 1"
