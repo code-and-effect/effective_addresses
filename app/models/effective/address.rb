@@ -4,7 +4,7 @@ module Effective
   class Address < ActiveRecord::Base
     self.table_name = EffectiveAddresses.addresses_table_name.to_s
 
-    POSTAL_CODE_CA = /\A\D{1}\d{1}\D{1}\ \d{1}\D{1}\d{1}\z/  # Matches 'T5Z 2B1'
+    POSTAL_CODE_CA = /\A[A-Z]{1}\d{1}[A-Z]{1}\ \d{1}[A-Z]{1}\d{1}\z/  # Matches 'T5Z 2B1'
     POSTAL_CODE_US = /\A\d{5}\z/
 
     belongs_to :addressable, :polymorphic => true, :touch => true
@@ -26,10 +26,12 @@ module Effective
 
     validates_format_of :postal_code, :with => POSTAL_CODE_CA,
       :if => proc { |address| Array(EffectiveAddresses.validate_postal_code_format).include?('CA') && address.country_code == 'CA' },
+      :allow_blank => true,  # We're already checking for presence above
       :message => 'is an invalid Canadian postal code'
 
     validates_format_of :postal_code, :with => POSTAL_CODE_US,
       :if => proc { |address| Array(EffectiveAddresses.validate_postal_code_format).include?('US') && address.country_code == 'US' },
+      :allow_blank => true,  # We're already checking for presence above
       :message => 'is an invalid United States zip code'
 
     default_scope -> { order(:updated_at) }
