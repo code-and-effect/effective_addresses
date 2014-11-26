@@ -101,6 +101,18 @@ class User
 end
 ```
 
+### Address Validations
+
+Address1, City, Country and Postal/Zip Code are all required fields.
+
+If the selected Country has provinces/states, then the province/state field will be required.
+
+If the country is Canada or United States, then the postal/zip code formatting will be enforced.
+
+This validation on the postal code/zip format can be disabled via the config/initializers `validate_postal_code_format` setting
+
+Canadian postal codes will be automatically upcased and formatted to a consistent format: `T5Z 3A4` (capitalized with a single space).
+
 
 ### Multiple Addresses
 
