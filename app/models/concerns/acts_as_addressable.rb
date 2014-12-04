@@ -15,6 +15,7 @@ module ActsAsAddressable
 
     # Setup validations and methods
     categories = @acts_as_addressable_opts.try(:flatten) || []
+
     if categories.first.kind_of?(Hash) # We were passed some validation requirements
       categories = categories.first
 
@@ -28,14 +29,14 @@ module ActsAsAddressable
         validates "#{category}_address", :effective_address_valid => true
 
         if validation.kind_of?(Hash)
-          (validates "#{category}_address", :presence => validation[:presence]) if validation[:presence]
-          validates "#{category}_address", :effective_address_full_name_presence => validation[:use_full_name] || EffectiveAddresses.use_full_name
+          validates "#{category}_address", :presence => validation.fetch(:presence, false)
+          validates "#{category}_address", :effective_address_full_name_presence => validation.fetch(:use_full_name, EffectiveAddresses.use_full_name)
         elsif validation == true
           validates "#{category}_address", :presence => true
           validates "#{category}_address", :effective_address_full_name_presence => EffectiveAddresses.use_full_name
         end
       end
-    else
+    else # No validation requirements passed
       categories.each do |category|
         category = category.to_s.gsub('_address', '')
 
@@ -53,7 +54,8 @@ module ActsAsAddressable
   end
 
   def effective_addresses(category)
-    addresses.select { |address| address.category == category.to_s }
+    category = category.to_s
+    addresses.select { |address| address.category == category }
   end
 
   def effective_address(category)
@@ -61,7 +63,7 @@ module ActsAsAddressable
   end
 
   def set_effective_address(category, atts)
-    raise ArgumentError.new("Effective::Address #{category}_address= expecting an Effective::Address or Hash object") unless (atts.kind_of?(Effective::Address) || atts.kind_of?(Hash) || atts == nil)
+    raise ArgumentError.new("Effective::Address #{category}_address= expecting an Effective::Address or Hash of attributes") unless (atts.kind_of?(Effective::Address) || atts.kind_of?(Hash) || atts == nil)
 
     atts = HashWithIndifferentAccess.new(atts.kind_of?(Effective::Address) ? atts.attributes : atts)
 

@@ -5,7 +5,7 @@ module Effective
     self.table_name = EffectiveAddresses.addresses_table_name.to_s
 
     POSTAL_CODE_CA = /\A[A-Z]{1}\d{1}[A-Z]{1}\ \d{1}[A-Z]{1}\d{1}\z/  # Matches 'T5Z 2B1'
-    POSTAL_CODE_US = /\A\d{5}\z/
+    POSTAL_CODE_US = /\A\d{5}\z/ # Matches 5 digits
 
     belongs_to :addressable, :polymorphic => true, :touch => true
 
@@ -13,12 +13,17 @@ module Effective
       category        :string, :validates => [:presence]
 
       full_name       :string
+
       address1        :string, :validates => [:presence]
       address2        :string
+
       city            :string, :validates => [:presence]
+
       state_code      :string
       country_code    :string, :validates => [:presence]
+
       postal_code     :string, :validates => [:presence]
+
       timestamps
     end
 
@@ -113,7 +118,7 @@ module Effective
     # An address may be set with a category but nothing else
     # This is considered empty
     def empty?
-      !address1.present? and !address2.present? and !city.present? and !state_code.present? and !country_code.present? and !postal_code.present?
+      !address1.present? && !address2.present? && !city.present? && !state_code.present? && !country_code.present? && !postal_code.present?
     end
 
     def to_s
