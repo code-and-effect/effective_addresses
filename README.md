@@ -1,14 +1,14 @@
 # Effective Addresses
 
-Provides helper methods for dealing with a has_many :addresses relationship as a single method.
+Extend any ActiveRecord object to have one or more named addresses. Includes a geographic region-aware custom form input backed by Carmen.
 
-Creates methods such as @user.billing_address and @user.billing_address=
+Creates methods such as `user.billing_address` and `user.billing_address=` for dealing with a has_many :addresses relationship as a single method.
 
-Includes full validations for addresses with multiple categories.
+Adds region-aware validations for provinces/states and postal codes.
 
-Includes a Formtastic & SimpleForm helper method to create/update the address of a parent object.
+Includes a Formtastic and SimpleForm one-liner method to drop in address fields to any form.
 
-Uses the Carmen gem so when a Country is selected, an AJAX request populates the State/Province fields as appropriate.
+Uses the Carmen gem internally so when a Country is selected, an AJAX request populates the province/state fields as appropriate.
 
 Rails 3.2.x and Rails 4 Support
 
@@ -17,7 +17,7 @@ Rails 3.2.x and Rails 4 Support
 Add to your Gemfile:
 
 ```ruby
-gem 'effective_addresses', :git => 'https://github.com/code-and-effect/effective_addresses'
+gem 'effective_addresses'
 ```
 
 Run the bundle command to install it:
@@ -34,7 +34,7 @@ rails generate effective_addresses:install
 
 The generator will install an initializer which describes all configuration options and creates a database migration.
 
-If you want to tweak the table name (to use something other than the default 'addresses'), manually adjust both the configuration file and the migration now.
+If you want to tweak the table name (to use something other than the default `addresses`), manually adjust both the configuration file and the migration now.
 
 Then migrate the database:
 
@@ -42,7 +42,7 @@ Then migrate the database:
 rake db:migrate
 ```
 
-If you'd like to use the form helper method, require the javascript in your application.js
+And require the javascript in your application.js:
 
 ```ruby
 //= require effective_addresses
@@ -53,9 +53,7 @@ If you'd like to use the form helper method, require the javascript in your appl
 
 ### Model
 
-To create a address, just add the mixin to your existing model and specify the name of the address
-
-To use without any validations, just add the mixin to your existing model:
+Add the mixin to your existing model and specify the name or names of the addresses it should respond to:
 
 ```ruby
 class User
@@ -63,9 +61,7 @@ class User
 end
 ```
 
-Calling @user.billing_address will return a single Effective::Address.  Calling @user.billing_addresses will return an array of Effective:Addresses
-
-This adds the following getters, along with the setters:
+This adds the following getters and setters:
 
 ```ruby
 @user.billing_address
@@ -73,7 +69,9 @@ This adds the following getters, along with the setters:
 @user.billing_addresses
 ```
 
-Using the effective_addresses.config.full_name value from the initializer, you can also define validations, simply, as follows:
+Calling `user.billing_address` will return a single `Effective::Address` object.  Calling `user.billing_addresses` will return an array of `Effective:Address` objects.
+
+You can also specify a `:presence` validation as follows:
 
 ```ruby
 class User
@@ -81,9 +79,7 @@ class User
 end
 ```
 
-This means when a User is created, it will not be valid unless a billing_address exist and is valid.
-
-Or you can define validations, with a bit more detail, as follows:
+or
 
 ```ruby
 class User
@@ -91,7 +87,7 @@ class User
 end
 ```
 
-You can also just do
+or
 
 ```ruby
 class User
@@ -101,11 +97,25 @@ class User
 end
 ```
 
+This means when a User is created, it will not be valid unless a billing_address exist and is valid.
+
+
+### Full Name
+
+Sometimes you want to collect a `full_name` field with your addresses, such as in the case of a mailing address; other times, it's an unnecessary field.
+
+When you specify the config option `config.use_full_name = true` all `acts_as_addressable` defined addresses will use `use_full_name => true` by default.
+
+This can be overridden on a per-address basis when declared in the model.
+
+When `use_full_name == true`, any calls to `effective_address_fields` form helper will display the full_name input, and the model will `validate_presence_of :full_name`.
+
+
 ### Address Validations
 
 Address1, City, Country and Postal/Zip Code are all required fields.
 
-If the selected Country has provinces/states, then the province/state field will be required.
+If the selected Country has provinces/states (not all countries do), then the province/state field will be required.
 
 If the country is Canada or United States, then the postal/zip code formatting will be enforced.
 
@@ -130,7 +140,7 @@ You can find all past addresses (including the current one) by:
 
 ### Strong Parameters
 
-Make your controller aware of the acts_as_addressable passed parameters:
+Make your controller aware of the `acts_as_addressable` passed parameters:
 
 ```ruby
 def permitted_params
@@ -141,15 +151,15 @@ def permitted_params
 end
 ```
 
-The permitted paramaters are:
+The actual permitted parameters are:
 
 ```ruby
 [:full_name, :address1, :address2, :city, :country_code, :state_code, :postal_code]
 ```
 
-### Helpers
+### Form Helpers
 
-Use the helper in a formtastic or simpleform form to quickly create the address fields.  This example is in HAML:
+Use the helper in a Formtastic or SimpleForm form to quickly create the address fields.  This example is in HAML:
 
 ```ruby
 = semantic_form_for @user do |f|
@@ -167,8 +177,7 @@ Use the helper in a formtastic or simpleform form to quickly create the address 
 
 Currently only supports Formtastic and SimpleForm.
 
-Assuming the javascript has been properly required (as above), when you select a country from the dropdown
-an AJAX GET request will be made to '/effective/address/subregions/:country_code' and populate the state dropdown with the appropriate states or provinces
+When you select a country from the select input an AJAX GET request will be made to `effective_addresses.address_subregions_path` (`/addresses/subregions/:country_code`) which populates the province/state dropdown with the selected country's states or provinces.
 
 
 ## License
@@ -187,6 +196,16 @@ Run tests by:
 ```ruby
 rake spec
 ```
+
+## Contributing
+
+1. Fork it
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Bonus points for test coverage
+6. Create new Pull Request
+
 
 
 

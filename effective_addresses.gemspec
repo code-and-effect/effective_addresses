@@ -10,8 +10,8 @@ Gem::Specification.new do |s|
   s.authors     = ["Code and Effect"]
   s.email       = ["info@codeandeffect.com"]
   s.homepage    = "https://github.com/code-and-effect/effective_addresses"
-  s.summary     = "Effectively manage address CRUD."
-  s.description = "Provides helper methods for dealing with a has_many :addresses relationship as a single method. Includes full validations for addresses with multiple categories. Includes a formtastic & simple_form helper method to create/update the address of a parent object. Uses the Carmen gem so when a Country is selected, an AJAX request populates the State/Province fields as appropriate."
+  s.summary     = "Extend any ActiveRecord object to have one or more named addresses. Includes a geographic region-aware custom form input backed by Carmen."
+  s.description = "Extend any ActiveRecord object to have one or more named addresses. Includes a geographic region-aware custom form input backed by Carmen."
 
   s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.md"]
   s.test_files = Dir["spec/**/*"]
