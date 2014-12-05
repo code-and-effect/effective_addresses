@@ -205,29 +205,3 @@ rake spec
 4. Push to the branch (`git push origin my-new-feature`)
 5. Bonus points for test coverage
 6. Create new Pull Request
-
-
-## Commercial Support
-
-Code and Effect is the product arm of [AgileStyle](http://www.agilestyle.com), an Edmonton-based shop that specializes in building custom web applications with Ruby on Rails.
-
-If you’re interested in training, customization, or help with integration, let us know.
-
-We're here to help you make your application and our gems as compatible as possible.
-
-Please contact us at [info@agilestyle.com](mailto:info@agilestyle.com) for more information.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
