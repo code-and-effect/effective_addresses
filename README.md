@@ -184,7 +184,7 @@ When you select a country from the select input an AJAX GET request will be made
 
 MIT License.  Copyright Code and Effect Inc.
 
-Code and Effect is the product arm of AgileStyle Inc. (http://www.agilestyle.com), an Edmonton-based shop that specializes in building custom web applications with Ruby on Rails.
+Code and Effect is the product arm of [AgileStyle Inc.](http://www.agilestyle.com), an Edmonton-based shop that specializes in building custom web applications with Ruby on Rails.
 
 
 ## Testing
