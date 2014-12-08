@@ -12,24 +12,17 @@ Gem::Specification.new do |s|
   s.homepage    = "https://github.com/code-and-effect/effective_addresses"
   s.summary     = "Extend any ActiveRecord object to have one or more named addresses. Includes a geographic region-aware custom form input backed by Carmen."
   s.description = "Extend any ActiveRecord object to have one or more named addresses. Includes a geographic region-aware custom form input backed by Carmen."
+  s.licenses    = ['MIT']
+
 
   s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.md"]
   s.test_files = Dir["spec/**/*"]
 
-  s.add_dependency "rails"
+  s.add_dependency "rails", [">= 3.2.0"]
   s.add_dependency "carmen"
   s.add_dependency "carmen-rails"
   s.add_dependency "coffee-rails"
   s.add_dependency "haml"
   s.add_dependency "migrant"
-
-  s.add_development_dependency "factory_girl_rails"
-  s.add_development_dependency "rspec-rails"
-  s.add_development_dependency "shoulda-matchers"
-  s.add_development_dependency "sqlite3"
-
-  s.add_development_dependency "guard"
-  s.add_development_dependency "guard-rspec"
-  s.add_development_dependency "guard-livereload"
 end
 
