@@ -6,6 +6,6 @@
 - if address.address2.present?
   = address.address2
   %br
-= [city.presence, state.presence].compact.join(', ')
+= [address.city.presence, address.state.presence].compact.join(', ')
 %br
-= [country.presence, postal_code.presence].compact.join(', ')
+= [address.country.presence, address.postal_code.presence].compact.join(', ')
