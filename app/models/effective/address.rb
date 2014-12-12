@@ -123,17 +123,17 @@ module Effective
 
     def to_s
       output = ''
-      output += "#{full_name}\n" if full_name.present?
-      output += "#{address1}\n" if address1.present?
-      output += "#{address2}\n" if address2.present?
-      output += [city.presence, state.presence].compact.join(', ')
-      output += '\n' if city.present? || state.present?
-      output += [country.presence, postal_code.presence].compact.join(', ')
+      output += "#{full_name.upcase}\n" if full_name.present?
+      output += "#{address1.upcase}\n" if address1.present?
+      output += "#{address2.upcase}\n" if address2.present?
+      output += [city.try(:upcase).presence, state_code.try(:upcase).presence, ' ' + postal_code.presence].compact.join(' ')
+      output += "\n"
+      output += country.try(:upcase).to_s
       output
     end
 
     def to_html
-      to_s.gsub(/\n/, '<br>').html_safe
+      to_s.gsub(/\n/, '<br>').gsub('  ', '&nbsp;&nbsp;').html_safe
     end
   end
 end

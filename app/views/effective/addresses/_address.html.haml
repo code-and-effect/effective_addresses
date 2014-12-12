@@ -1,11 +1,11 @@
 - if address.full_name.present?
-  = address.full_name
+  = address.full_name.upcase
   %br
-= address.address1
+= address.address1.upcase
 %br
 - if address.address2.present?
-  = address.address2
+  = address.address2.upcase
   %br
-= [address.city.presence, address.state.presence].compact.join(', ')
+= [address.city.try(:upcase).presence, address.state_code.try(:upcase).presence, '&nbsp;' + address.postal_code.presence].compact.join('&nbsp;').html_safe
 %br
-= [address.country.presence, address.postal_code.presence].compact.join(', ')
+= address.country.try(:upcase).to_s
