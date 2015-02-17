@@ -5,7 +5,7 @@
   - if ((f.object.errors.include?(method) && !f.object.errors.include?(:addresses)) rescue false)
     - fa.object.errors.add(:address1, f.object.errors[method].first)
 
-  - if f.object._validators[method].any? { |v| v.kind_of?(EffectiveAddressFullNamePresenceValidator) }
+  - if use_full_name || fa.object.errors.include?(:full_name)
     = fa.input :full_name, :required => true, :label => 'Full name', :prompt => 'Full name'
 
   = fa.input :address1, :placeholder => 'Address', :label => "Address 1"
