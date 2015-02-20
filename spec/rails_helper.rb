@@ -4,6 +4,7 @@ require 'spec_helper'
 require File.expand_path("../dummy/config/environment", __FILE__)
 
 require 'rspec/rails'
+require 'carmen-rails'
 require 'factory_girl_rails'
 
 # Add additional requires below this line. Rails is not loaded until this point!

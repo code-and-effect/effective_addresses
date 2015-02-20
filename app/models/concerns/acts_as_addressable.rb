@@ -16,8 +16,6 @@ module ActsAsAddressable
     # Setup validations and methods
     categories = @acts_as_addressable_opts.try(:flatten) || []
 
-    binding.pry
-
     if categories.first.kind_of?(Hash) # We were passed some validation requirements
       categories = categories.first
 

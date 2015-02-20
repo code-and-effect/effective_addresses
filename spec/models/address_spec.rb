@@ -1,5 +1,4 @@
 require 'rails_helper'
-require 'carmen-rails'
 
 describe Effective::Address do
   let(:address) { FactoryGirl.create(:address) }

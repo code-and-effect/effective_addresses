@@ -1,11 +1,7 @@
 class User < ActiveRecord::Base
-  devise :database_authenticatable, :registerable, :rememberable, :recoverable, :trackable, :validatable, :authentication_keys => [:email]
-
-  acts_as_addressable :billing, :shipping
-
   structure do
     # Devise attributes
-    encrypted_password      :string, :validates => [:presence]
+    encrypted_password      :string
     reset_password_token    :string
     reset_password_sent_at  :datetime
     remember_created_at     :datetime
