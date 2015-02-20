@@ -27,6 +27,12 @@ FactoryGirl.define do
     sequence(:last_name) { |n| "Last Name #{n}"}
   end
 
+  factory :user_with_address do
+    sequence(:email) { |n| "user_#{n}@effective_addresses.test"}
+    sequence(:first_name) { |n| "First Name #{n}"}
+    sequence(:last_name) { |n| "Last Name #{n}"}
+  end
+
   factory :user_with_required_address do
     sequence(:email) { |n| "user_#{n}@effective_addresses.test"}
     sequence(:first_name) { |n| "First Name #{n}"}
@@ -44,4 +50,11 @@ FactoryGirl.define do
     sequence(:first_name) { |n| "First Name #{n}"}
     sequence(:last_name) { |n| "Last Name #{n}"}
   end
+
+  factory :user_with_singular_address do
+    sequence(:email) { |n| "user_#{n}@effective_addresses.test"}
+    sequence(:first_name) { |n| "First Name #{n}"}
+    sequence(:last_name) { |n| "Last Name #{n}"}
+  end
+
 end

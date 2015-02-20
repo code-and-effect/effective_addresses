@@ -4,7 +4,7 @@ EffectiveAddresses.setup do |config|
 
   # Display Full Name on Address forms, and validate presence by default
   # (can be overridden on a per address basis)
-  config.use_full_name = true
+  config.use_full_name = false
 
   # Country codes to display in country_select dropdowns.
   config.country_codes = :all #
