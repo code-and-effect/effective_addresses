@@ -1,6 +1,6 @@
 require "effective_addresses/engine"
 require "effective_addresses/version"
-#require 'migrant'     # Required for rspec to run properly
+require 'migrant'     # Required for rspec to run properly
 
 module EffectiveAddresses
 

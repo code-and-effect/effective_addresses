@@ -1,6 +1,8 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Effective::AddressesController do
+  routes { EffectiveAddresses::Engine.routes }
+
   it 'should render the subregions partial' do
     get :subregions, :country_code => 'CA'
     response.status.should be 200
@@ -24,7 +26,8 @@ describe Effective::AddressesController do
 
   it 'Should return an error when passed bad country code' do
     get :subregions, :country_code => 'NOPE'
-    response.status.should be 422 # Unprocessable Entity
+    response.status.should be 200
+    response.body.should eq "<option value=''>None Available</option>"
   end
 
 end

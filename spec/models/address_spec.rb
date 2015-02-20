@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'carmen-rails'
 
 describe Effective::Address do
