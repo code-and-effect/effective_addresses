@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe User do
 
@@ -131,16 +131,12 @@ describe User do
       user.billing_address = address
       user.save!
 
-      Effective::Address.all.count.should eq 1
-      user.addresses.length.should eq 1
-
       address_id = user.billing_address.id
       address_id.present?.should eq true
 
       # Now let's assign another address with different atts
       user.billing_address = address2
-      user.billing_address.address1.should eq address2.address1
-      user.save!
+      user.save!.should eq true
 
       Effective::Address.all.count.should eq 1
       user.addresses.length.should eq 1
@@ -148,9 +144,8 @@ describe User do
       user.reload
 
       user.billing_address.id.should eq address_id
-
-      user.billing_address.address1.should_not eq address.address1
       user.billing_address.address1.should eq address2.address1
+      user.billing_address.address1.should_not eq address.address1
     end
 
   end

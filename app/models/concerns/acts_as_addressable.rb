@@ -72,12 +72,12 @@ module ActsAsAddressable
   end
 
   def set_effective_address(category, atts)
-    raise ArgumentError.new("Effective::Address #{category}_address= expecting an Effective::Address or Hash of attributes") unless (atts.kind_of?(Effective::Address) || atts.kind_of?(Hash))
+    raise ArgumentError.new("Effective::Address #{category}_address= expecting an Effective::Address or Hash of attributes") unless (atts.kind_of?(Effective::Address) || atts.kind_of?(Hash) || atts == nil)
 
     atts = HashWithIndifferentAccess.new(atts.kind_of?(Effective::Address) ? atts.attributes : atts)
 
     add = Effective::Address.new(
-      :category     => category,
+      :category     => category.to_s,
       :full_name    => atts[:full_name],
       :address1     => atts[:address1],
       :address2     => atts[:address2],
@@ -91,12 +91,12 @@ module ActsAsAddressable
   end
 
   def set_singular_effective_address(category, atts)
-    raise ArgumentError.new("Effective::Address #{category}_address= expecting an Effective::Address or Hash of attributes") unless (atts.kind_of?(Effective::Address) || atts.kind_of?(Hash))
+    raise ArgumentError.new("Effective::Address #{category}_address= expecting an Effective::Address or Hash of attributes") unless (atts.kind_of?(Effective::Address) || atts.kind_of?(Hash) || atts == nil)
 
     atts = HashWithIndifferentAccess.new(atts.kind_of?(Effective::Address) ? atts.attributes : atts)
 
     (effective_address(category) || self.addresses.build()).tap do |existing|
-      existing.category     = category
+      existing.category     = category.to_s
       existing.full_name    = atts[:full_name]
       existing.address1     = atts[:address1]
       existing.address2     = atts[:address2]
