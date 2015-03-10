@@ -7,7 +7,14 @@ module EffectiveAddressesHelper
     required = (form.object._validators[method.to_sym].any? { |v| v.kind_of?(ActiveRecord::Validations::PresenceValidator) && (v.options[:if].blank? || (v.options[:if].respond_to?(:call) ? f.object.instance_exec(&v.options[:if]) : v.options[:if])) } rescue true)
     use_full_name = form.object._validators[method.to_sym].any? { |v| v.kind_of?(EffectiveAddressFullNamePresenceValidator) }
 
-    opts = {:f => form, :method => method, :required => required, :use_full_name => use_full_name}.merge(options)
+    address = form.object.send(method) || form.object.addresses.build(:category => method.to_s.gsub('_address', ''))
+
+    if address.new_record? && EffectiveAddresses.pre_selected_country.present?
+      address.country = EffectiveAddresses.pre_selected_country
+      address.state = EffectiveAddresses.pre_selected_state if (address.country.present? && EffectiveAddresses.pre_selected_state.present?)
+    end
+
+    opts = {:required => required, :use_full_name => use_full_name}.merge(options).merge({:f => form, :address => address, :method => method})
 
     if form.class.name == 'SimpleForm::FormBuilder'
       render :partial => 'effective/addresses/address_fields_simple_form', :locals => opts

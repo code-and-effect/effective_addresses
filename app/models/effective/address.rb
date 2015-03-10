@@ -133,7 +133,7 @@ module Effective
     end
 
     def to_html
-      to_s.gsub(/\n/, '<br>').gsub('  ', '&nbsp;&nbsp;').html_safe
+      to_s.gsub(/\n/, "<br>\n").gsub('  ', '&nbsp;&nbsp;').html_safe
     end
   end
 end

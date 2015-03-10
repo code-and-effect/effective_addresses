@@ -11,6 +11,8 @@ module EffectiveAddresses
   mattr_accessor :use_full_name
   mattr_accessor :simple_form_options
   mattr_accessor :validate_postal_code_format
+  mattr_accessor :pre_selected_country
+  mattr_accessor :pre_selected_state
 
   def self.setup
     yield self

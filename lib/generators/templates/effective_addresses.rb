@@ -13,6 +13,15 @@ EffectiveAddresses.setup do |config|
   # Select these countries ontop of the others
   config.country_codes_priority = ['US', 'CA'] # Leave empty array for no priority countries
 
+  # Preselect this country on any new address forms
+  # Valid values are: country code, country name, or nil
+  config.pre_selected_country = nil
+
+  # Preselect this state on any new address forms
+  # Must also define pre_selected_country for this to take affect
+  # Valid values are: state code, state name, or nil
+  config.pre_selected_state = nil
+
   # Validate that the postal/zip code format is correct for these countries
   # Right now, only US and Canada are supported
   config.validate_postal_code_format = ['US', 'CA']

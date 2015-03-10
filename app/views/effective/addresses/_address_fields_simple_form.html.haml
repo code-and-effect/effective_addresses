@@ -1,4 +1,4 @@
-= f.simple_fields_for method, (f.object.send(method) || f.object.addresses.build(:category => method.to_s.gsub('_address', ''))), (EffectiveAddresses.simple_form_options || {}) do |fa|
+= f.simple_fields_for method, (address || f.object.send(method) || f.object.addresses.build(:category => method.to_s.gsub('_address', ''))), (EffectiveAddresses.simple_form_options || {}) do |fa|
   - uuid = fa.object_id
   - method = method.to_sym
 
@@ -6,7 +6,7 @@
     - fa.object.errors.add(:address1, f.object.errors[method].first)
 
   - if use_full_name || fa.object.errors.include?(:full_name)
-    = fa.input :full_name, :required => required, :label => 'Full name', :prompt => 'Full name'
+    = fa.input :full_name, :required => required, :label => 'Full name', :placeholder => 'Full name'
 
   = fa.input :address1, :placeholder => 'Address', :label => 'Address 1', :required => required
   = fa.input :address2, :label => 'Address 2'

@@ -6,3 +6,5 @@ To change the test database in this dummy app:
 - No migrations, so just make whatever changes you want to schema.rb
 
  bundle exec rake app:db:test:prepare
+
+ RAILS_ENV=test rake db:schema:load; rake
