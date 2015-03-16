@@ -118,7 +118,7 @@ module Effective
     # An address may be set with a category but nothing else
     # This is considered empty
     def empty?
-      !address1.present? && !address2.present? && !city.present? && !state_code.present? && !country_code.present? && !postal_code.present?
+      !address1.present? && !address2.present? && !city.present? && !postal_code.present?
     end
 
     def to_s
