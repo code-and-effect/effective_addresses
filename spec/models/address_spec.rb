@@ -48,4 +48,10 @@ describe Effective::Address do
     address.state.should eq 'New York'
   end
 
+  describe '#to_s' do
+    it 'works without a postal code' do
+      address.postal_code = nil
+      expect(address.to_s).to be_a(String)
+    end
+  end
 end
