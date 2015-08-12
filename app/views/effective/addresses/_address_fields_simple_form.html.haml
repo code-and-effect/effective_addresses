@@ -6,17 +6,18 @@
     - fa.object.errors.add(:address1, f.object.errors[method].first)
 
   - if use_full_name || fa.object.errors.include?(:full_name)
-    = fa.input :full_name, :required => required, :label => 'Full name', :placeholder => 'Full name'
+    = fa.input :full_name, :required => required
 
-  = fa.input :address1, :placeholder => 'Address', :label => 'Address 1', :required => required
-  = fa.input :address2, :label => 'Address 2'
-  = fa.input :city, :placeholder => 'City', :required => required
 
-  = fa.input :country_code, :as => :select, :label => 'Country', :prompt => 'Choose country...', :collection => region_options_for_simple_form_select(), :input_html => {'data-effective-address-country' => uuid}, :required => required
+  = fa.input :address1, :required => required
+  = fa.input :address2
+  = fa.input :city, :required => required
+
+  = fa.input :country_code, :as => :select, :collection => region_options_for_simple_form_select(), :input_html => {'data-effective-address-country' => uuid}, :required => required
 
   - if fa.object.try(:country_code).present?
-    = fa.input :state_code, :as => :select, :label => 'Province / State', :prompt => 'Please choose a country first', :collection => region_options_for_simple_form_select(Carmen::Country.coded(fa.object.country_code).subregions), :input_html => {'data-effective-address-state' => uuid}, :required => required
+    = fa.input :state_code, :as => :select, :collection => region_options_for_simple_form_select(Carmen::Country.coded(fa.object.country_code).subregions), :input_html => {'data-effective-address-state' => uuid}, :required => required
   - else
-    = fa.input :state_code, :as => :select, :label => 'Province / State', :disabled => true, :prompt => 'Please choose a country', :collection => [], :input_html => { 'data-effective-address-state' => uuid }, :required => required
+    = fa.input :state_code, :as => :select, :disabled => true, :collection => [], :input_html => { 'data-effective-address-state' => uuid }, :required => required
 
-  = fa.input :postal_code, :label => 'Postal / Zip code', :placeholder => 'Postal / Zip code', :required => required
+  = fa.input :postal_code, :required => required
