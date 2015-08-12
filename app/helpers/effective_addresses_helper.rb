@@ -40,7 +40,7 @@ module EffectiveAddressesHelper
       collection.insert(0, ['---------------------', '', :disabled])
 
       EffectiveAddresses.country_codes_priority.reverse.each do |code|
-        if (country = countries.coded(code))
+        if (country = Carmen::Country.coded(code))
           collection.insert(0, [country.name, country.code])
         end
       end
