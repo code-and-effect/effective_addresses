@@ -8,7 +8,7 @@ EffectiveAddresses.setup do |config|
 
   # Country codes to display in country_select dropdowns.
   config.country_codes = :all #
-  config.country_codes_priority = ['US', 'CA'] # Leave empty array for no priority countries
+  config.country_codes_priority = ['US', 'CA'] # nil for no priority countries
 
   # Or you can be more selective...
   #config.country_codes = ['US', 'CA']
