@@ -26,6 +26,12 @@ Run the bundle command to install it:
 bundle install
 ```
 
+If you're using effective_addresses from within a rails engine (optional):
+
+```ruby
+require 'effective_addresses'
+```
+
 Then run the generator:
 
 ```ruby
