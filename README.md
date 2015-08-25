@@ -165,7 +165,13 @@ The actual permitted parameters are:
 
 ### Form Helpers
 
-Use the helper in a Formtastic or SimpleForm form to quickly create the address fields.  This example is in HAML:
+Use the helper in a Formtastic or SimpleForm form to quickly create the address fields. Currently only supports Formtastic and SimpleForm.
+                                                                                       
+When you select a country from the select input an AJAX GET request will be made to `effective_addresses.address_subregions_path` (`/addresses/subregions/:country_code`) 
+which populates the province/state dropdown with the selected country's states or provinces.
+
+
+#### Formtastic
 
 ```ruby
 = semantic_form_for @user do |f|
@@ -173,7 +179,11 @@ Use the helper in a Formtastic or SimpleForm form to quickly create the address 
   = effective_address_fields(f, :billing_address)
 
   = f.action :submit
+```
 
+#### SimpleForm
+
+```ruby
 = simple_form_for @user do |f|
   %h3 Billing Address
   = effective_address_fields(f, :billing_address)
@@ -181,9 +191,15 @@ Use the helper in a Formtastic or SimpleForm form to quickly create the address 
   = f.submit 'Save'
 ```
 
-Currently only supports Formtastic and SimpleForm.
+#### Field Ordering
+You may choose to order fields different than the default, such as putting the country first.  You can do so with the `:field_order` option, for example:
+```ruby
+= simple_form_for @user do |f|
+  %h3 Billing Address
+  = effective_address_fields(f, :billing_address, :field_order => [:country_code, :full_name, :address1, :address2, :city, :state_code, :postal_code])
 
-When you select a country from the select input an AJAX GET request will be made to `effective_addresses.address_subregions_path` (`/addresses/subregions/:country_code`) which populates the province/state dropdown with the selected country's states or provinces.
+  = f.submit 'Save'
+```
 
 ## Geocoder option
 
