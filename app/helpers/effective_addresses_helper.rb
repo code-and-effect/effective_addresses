@@ -12,7 +12,7 @@ module EffectiveAddressesHelper
     address = form.object.send(method) || form.object.addresses.build(:category => method.to_s.gsub('_address', ''))
     effective_address_pre_select(address) if address.new_record?
 
-    opts = {:required => required, :use_full_name => use_full_name}.merge(options).merge({:f => form, :address => address, :method => method})
+    opts = {:required => required, :use_full_name => use_full_name, :field_order => [:full_name, :address1, :address2, :city, :country_code, :state_code, :postal_code]}.merge(options).merge({:f => form, :address => address, :method => method})
 
     if form.class.name == 'SimpleForm::FormBuilder'
       render :partial => 'effective/addresses/address_fields_simple_form', :locals => opts
