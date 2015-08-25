@@ -1,6 +1,8 @@
 require 'carmen-rails'
 
 module EffectiveAddressesHelper
+  @@use_geocoder = defined?(Geocoder)
+
   def effective_address_fields(form, method = 'billing', options = {})
     method = (method.to_s.include?('_address') ? method.to_s : "#{method}_address")
 
@@ -8,11 +10,7 @@ module EffectiveAddressesHelper
     use_full_name = form.object._validators[method.to_sym].any? { |v| v.kind_of?(EffectiveAddressFullNamePresenceValidator) }
 
     address = form.object.send(method) || form.object.addresses.build(:category => method.to_s.gsub('_address', ''))
-
-    if address.new_record? && EffectiveAddresses.pre_selected_country.present?
-      address.country = EffectiveAddresses.pre_selected_country
-      address.state = EffectiveAddresses.pre_selected_state if (address.country.present? && EffectiveAddresses.pre_selected_state.present?)
-    end
+    address.country, address.state = *pre_selections if address.new_record?
 
     opts = {:required => required, :use_full_name => use_full_name}.merge(options).merge({:f => form, :address => address, :method => method})
 
@@ -22,6 +20,19 @@ module EffectiveAddressesHelper
       render :partial => 'effective/addresses/address_fields_formtastic', :locals => opts
     else
       raise 'Unsupported FormBuilder.  You must use formtastic or simpleform. Sorry.'
+    end
+  end
+
+  def pre_selections
+    result = []
+
+    if EffectiveAddresses.pre_selected_country.present?
+      result << EffectiveAddresses.pre_selected_country
+      result << EffectiveAddresses.pre_selected_state if (result[0].present? && EffectiveAddresses.pre_selected_state.present?)
+    elsif @@use_geocoder
+      data = request.location.data
+      result << data['country_code']
+      result << data['region_code']
     end
   end
 
