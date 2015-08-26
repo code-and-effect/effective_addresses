@@ -27,7 +27,7 @@ module EffectiveAddressesHelper
     if EffectiveAddresses.pre_selected_country.present?
       address.country = EffectiveAddresses.pre_selected_country
       address.state = EffectiveAddresses.pre_selected_state if (result[0].present? && EffectiveAddresses.pre_selected_state.present?)
-    elsif @@use_geocoder
+    elsif @@use_geocoder && request.location.present?
       data = request.location.data
       address.country = data['country_code']
       address.state = data['region_code']
