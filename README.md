@@ -216,11 +216,17 @@ Add `config/initializer/geocoder.rb`, below is a sample:
 
 ```ruby
 Geocoder.configure(
-    # geocoding options
-
-    # IP address geocoding service (see below for supported options):
+    # Remote IP address geocoding service (see below for supported options):
     #    https://github.com/alexreisner/geocoder#ip-address-services
     ip_lookup: :telize,
+    
+    # Local IP address file database:
+    # 1. gem 'maxminddb'
+    # 2. download database: http://dev.maxmind.com/geoip/geoip2/geolite2/
+    # 3. save file in db/geocoder
+    # ip_lookup: :geoip2,
+    # geoip2: { file: File.expand_path('../../db/geocoder/GeoLite2-City.mmdb', File.dirname(__FILE__)) },
+    
     cache: Rails.cache,
     cache_prefix: 'geocoder:'
 )

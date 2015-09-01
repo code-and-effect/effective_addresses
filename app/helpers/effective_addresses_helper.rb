@@ -30,7 +30,7 @@ module EffectiveAddressesHelper
     elsif @@use_geocoder && request.location.present?
       location = request.location
       address.country = location.country_code
-      address.state = location.region_code
+      address.state = location.state_code
       address.postal_code = location.postal_code
       address.city = location.city
     end
