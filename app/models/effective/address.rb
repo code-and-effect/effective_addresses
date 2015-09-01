@@ -9,23 +9,7 @@ module Effective
 
     belongs_to :addressable, :polymorphic => true, :touch => true
 
-    structure do
-      category        :string, :validates => [:presence]
-
-      full_name       :string
-
-      address1        :string, :validates => [:presence]
-      address2        :string
-
-      city            :string, :validates => [:presence]
-
-      state_code      :string
-      country_code    :string, :validates => [:presence]
-
-      postal_code     :string, :validates => [:presence]
-
-      timestamps
-    end
+    validates_presence_of :category, :address1, :city, :country_code, :postal_code
 
     validates_presence_of :state_code, :if => Proc.new { |address| address.country_code.blank? || Carmen::Country.coded(address.country_code).try(:subregions).present? }
 
