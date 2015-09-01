@@ -28,11 +28,11 @@ module EffectiveAddressesHelper
       address.country = EffectiveAddresses.pre_selected_country
       address.state = EffectiveAddresses.pre_selected_state if (result[0].present? && EffectiveAddresses.pre_selected_state.present?)
     elsif @@use_geocoder && request.location.present?
-      data = request.location.data
-      address.country = data['country_code']
-      address.state = data['region_code']
-      address.postal_code = data['postal_code']
-      address.city = data['city']
+      location = request.location
+      address.country = location.country_code
+      address.state = location.region_code
+      address.postal_code = location.postal_code
+      address.city = location.city
     end
   end
 
