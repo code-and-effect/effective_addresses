@@ -165,7 +165,13 @@ The actual permitted parameters are:
 
 ### Form Helpers
 
-Use the helper in a Formtastic or SimpleForm form to quickly create the address fields.  This example is in HAML:
+Use the helper in a Formtastic or SimpleForm form to quickly create the address fields. Currently only supports Formtastic and SimpleForm.
+                                                                                       
+When you select a country from the select input an AJAX GET request will be made to `effective_addresses.address_subregions_path` (`/addresses/subregions/:country_code`) 
+which populates the province/state dropdown with the selected country's states or provinces.
+
+
+#### Formtastic
 
 ```ruby
 = semantic_form_for @user do |f|
@@ -173,7 +179,11 @@ Use the helper in a Formtastic or SimpleForm form to quickly create the address 
   = effective_address_fields(f, :billing_address)
 
   = f.action :submit
+```
 
+#### SimpleForm
+
+```ruby
 = simple_form_for @user do |f|
   %h3 Billing Address
   = effective_address_fields(f, :billing_address)
@@ -181,9 +191,57 @@ Use the helper in a Formtastic or SimpleForm form to quickly create the address 
   = f.submit 'Save'
 ```
 
-Currently only supports Formtastic and SimpleForm.
+#### Field Ordering
+You may choose to order fields different than the default, such as putting the country first.  You can do so with the `:field_order` option, for example:
+```ruby
+= simple_form_for @user do |f|
+  %h3 Billing Address
+  = effective_address_fields(f, :billing_address, :field_order => [:country_code, :full_name, :address1, :address2, :city, :state_code, :postal_code])
 
-When you select a country from the select input an AJAX GET request will be made to `effective_addresses.address_subregions_path` (`/addresses/subregions/:country_code`) which populates the province/state dropdown with the selected country's states or provinces.
+  = f.submit 'Save'
+```
+
+## Geocoder option
+
+Effective addresses has an optional integration with [Geocoder](https://github.com/alexreisner/geocoder).  At it's simplest, this provides preselection and prefill of `country`, `state`, `city`, and `postal_code` based on the user's IP address. See [Geocoder](https://github.com/alexreisner/geocoder) for
+a complete list of possibilities.
+
+### Installation and Setup
+
+```ruby
+gem 'geocoder'
+```
+
+Add `config/initializer/geocoder.rb`, below is a sample:
+
+```ruby
+Geocoder.configure(
+    # geocoding options
+
+    # IP address geocoding service (see below for supported options):
+    #    https://github.com/alexreisner/geocoder#ip-address-services
+    ip_lookup: :telize,
+    cache: Rails.cache,
+    cache_prefix: 'geocoder:'
+)
+
+# Provide a hardcoded ip of 1.2.3.4 when in developmnt/test and the ip address resolves as localhost
+if %w(development test).include? Rails.env
+  module Geocoder
+    module Request
+      def geocoder_spoofable_ip_with_localhost_override
+        ip_candidate = geocoder_spoofable_ip_without_localhost_override
+        if ip_candidate == '127.0.0.1'
+          '1.2.3.4'
+        else
+          ip_candidate
+        end
+      end
+      alias_method_chain :geocoder_spoofable_ip, :localhost_override
+    end
+  end
+end
+```
 
 
 ## License

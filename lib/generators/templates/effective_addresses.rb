@@ -13,13 +13,15 @@ EffectiveAddresses.setup do |config|
   # Select these countries ontop of the others
   config.country_codes_priority = ['US', 'CA'] # nil for no priority countries
 
-  # Preselect this country on any new address forms
-  # Valid values are: country code, country name, or nil
+  # Force this country to be preselected on any new address forms.
+  # Valid values are: country code, country name, or nil.
+  # Leave nil if using Geocoder for IP based discovery.
   config.pre_selected_country = nil
 
-  # Preselect this state on any new address forms
+  # Force this state to be preselected on any new address forms.
   # Must also define pre_selected_country for this to take affect
-  # Valid values are: state code, state name, or nil
+  # Valid values are: state code, state name, or nil.
+  # Leave nil if using Geocoder for IP based discovery.
   config.pre_selected_state = nil
 
   # Validate that the postal/zip code format is correct for these countries

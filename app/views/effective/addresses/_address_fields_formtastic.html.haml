@@ -5,28 +5,41 @@
   - if ((f.object.errors.include?(method) && !f.object.errors.include?(:addresses)) rescue false)
     - fa.object.errors.add(:address1, f.object.errors[method].first)
 
-  - if use_full_name || fa.object.errors.include?(:full_name)
-    = fa.input :full_name, :required => true, :label => 'Full name', :placeholder => 'Full name'
+  - field_order.each do |field|
 
-  = fa.input :address1, :placeholder => 'Address', :label => "Address 1"
-  = fa.input :address2, :label => 'Address 2'
-  = fa.input :city, :placeholder => 'City'
-  = fa.input :country_code,
-    :as => :select,
-    :label => 'Country',
-    :prompt => 'Country...',
-    :collection => region_options_for_select(EffectiveAddresses.country_codes == :all ? Carmen::Country.all : Carmen::Country.all.select{ |c| EffectiveAddresses.country_codes.include?(c.code) rescue true}, fa.object.country_code, :priority => EffectiveAddresses.country_codes_priority),
-    :input_html => { 'data-effective-address-country' => uuid }
+    - case field
+      - when :full_name
+        - if use_full_name || fa.object.errors.include?(:full_name)
+          = fa.input :full_name, :required => true, :label => 'Full name', :placeholder => 'Full name'
 
-  - if fa.object.country_code.present?
-    = fa.input :state_code, :as => :select, :label => 'Province / State',
-      :collection => region_options_for_select(Carmen::Country.coded(fa.object.country_code).subregions, fa.object.state_code),
-      :prompt => 'please select a country',
-      :input_html => { 'data-effective-address-state' => uuid }
-  - else
-    = fa.input :state_code, :as => :select, :label => 'Province / State',
-      :collection => [],
-      :prompt => 'please select a country',
-      :input_html => {:disabled => 'disabled', 'data-effective-address-state' => uuid}
+      - when :address1
+        = fa.input :address1, :placeholder => 'Address', :label => "Address 1"
 
-  = fa.input :postal_code, :label => 'Postal / Zip code', :placeholder => 'Postal / Zip code'
+      - when :address2
+        = fa.input :address2, :label => 'Address 2'
+
+      - when :city
+        = fa.input :city, :placeholder => 'City'
+
+      - when :country_code
+        = fa.input :country_code,
+          :as => :select,
+          :label => 'Country',
+          :prompt => 'Country...',
+          :collection => region_options_for_select(EffectiveAddresses.country_codes == :all ? Carmen::Country.all : Carmen::Country.all.select{ |c| EffectiveAddresses.country_codes.include?(c.code) rescue true}, fa.object.country_code, :priority => EffectiveAddresses.country_codes_priority),
+          :input_html => { 'data-effective-address-country' => uuid }
+
+      - when :state_code
+        - if fa.object.country_code.present?
+          = fa.input :state_code, :as => :select, :label => 'Province / State',
+            :collection => region_options_for_select(Carmen::Country.coded(fa.object.country_code).subregions, fa.object.state_code),
+            :prompt => 'please select a country',
+            :input_html => { 'data-effective-address-state' => uuid }
+        - else
+          = fa.input :state_code, :as => :select, :label => 'Province / State',
+            :collection => [],
+            :prompt => 'please select a country',
+            :input_html => {:disabled => 'disabled', 'data-effective-address-state' => uuid}
+
+      - when :postal_code
+        = fa.input :postal_code, :label => 'Postal / Zip code', :placeholder => 'Postal / Zip code'

@@ -5,19 +5,30 @@
   - if ((f.object.errors.include?(method) && !f.object.errors.include?(:addresses)) rescue false)
     - fa.object.errors.add(:address1, f.object.errors[method].first)
 
-  - if use_full_name || fa.object.errors.include?(:full_name)
-    = fa.input :full_name, :required => required
+  - field_order.each do |field|
 
+    - case field
+      - when :full_name
+        - if use_full_name || fa.object.errors.include?(:full_name)
+          = fa.input :full_name, :required => required
 
-  = fa.input :address1, :required => required
-  = fa.input :address2
-  = fa.input :city, :required => required
+      - when :address1
+        = fa.input :address1, :required => required
 
-  = fa.input :country_code, :as => :select, :collection => region_options_for_simple_form_select(), :input_html => {'data-effective-address-country' => uuid}, :required => required
+      - when :address2
+        = fa.input :address2
 
-  - if fa.object.try(:country_code).present?
-    = fa.input :state_code, :as => :select, :collection => region_options_for_simple_form_select(Carmen::Country.coded(fa.object.country_code).subregions), :input_html => {'data-effective-address-state' => uuid}, :required => required
-  - else
-    = fa.input :state_code, :as => :select, :disabled => true, :collection => [], :input_html => { 'data-effective-address-state' => uuid }, :required => required
+      - when :city
+        = fa.input :city, :input_html => { 'data-effective-address-city' => uuid }, :required => required
 
-  = fa.input :postal_code, :required => required
+      - when :country_code
+        = fa.input :country_code, :as => :select, :collection => region_options_for_simple_form_select(), :input_html => {'data-effective-address-country' => uuid}, :required => required
+
+      - when :state_code
+        - if fa.object.try(:country_code).present?
+          = fa.input :state_code, :as => :select, :collection => region_options_for_simple_form_select(Carmen::Country.coded(fa.object.country_code).subregions), :input_html => {'data-effective-address-state' => uuid}, :required => required
+        - else
+          = fa.input :state_code, :as => :select, :disabled => true, :collection => [], :input_html => { 'data-effective-address-state' => uuid }, :required => required
+
+      - when :postal_code
+        = fa.input :postal_code, :input_html => { 'data-effective-address-postal-code' => uuid }, :required => required

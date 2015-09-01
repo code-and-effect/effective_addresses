@@ -1,6 +1,8 @@
 require 'carmen-rails'
 
 module EffectiveAddressesHelper
+  @@use_geocoder = defined?(Geocoder)
+
   def effective_address_fields(form, method = 'billing', options = {})
     method = (method.to_s.include?('_address') ? method.to_s : "#{method}_address")
 
@@ -8,13 +10,9 @@ module EffectiveAddressesHelper
     use_full_name = form.object._validators[method.to_sym].any? { |v| v.kind_of?(EffectiveAddressFullNamePresenceValidator) }
 
     address = form.object.send(method) || form.object.addresses.build(:category => method.to_s.gsub('_address', ''))
+    effective_address_pre_select(address) if address.new_record?
 
-    if address.new_record? && EffectiveAddresses.pre_selected_country.present?
-      address.country = EffectiveAddresses.pre_selected_country
-      address.state = EffectiveAddresses.pre_selected_state if (address.country.present? && EffectiveAddresses.pre_selected_state.present?)
-    end
-
-    opts = {:required => required, :use_full_name => use_full_name}.merge(options).merge({:f => form, :address => address, :method => method})
+    opts = {:required => required, :use_full_name => use_full_name, :field_order => [:full_name, :address1, :address2, :city, :country_code, :state_code, :postal_code]}.merge(options).merge({:f => form, :address => address, :method => method})
 
     if form.class.name == 'SimpleForm::FormBuilder'
       render :partial => 'effective/addresses/address_fields_simple_form', :locals => opts
@@ -22,6 +20,19 @@ module EffectiveAddressesHelper
       render :partial => 'effective/addresses/address_fields_formtastic', :locals => opts
     else
       raise 'Unsupported FormBuilder.  You must use formtastic or simpleform. Sorry.'
+    end
+  end
+
+  def effective_address_pre_select(address)
+    if EffectiveAddresses.pre_selected_country.present?
+      address.country = EffectiveAddresses.pre_selected_country
+      address.state = EffectiveAddresses.pre_selected_state if (result[0].present? && EffectiveAddresses.pre_selected_state.present?)
+    elsif @@use_geocoder && request.location.present?
+      data = request.location.data
+      address.country = data['country_code']
+      address.state = data['region_code']
+      address.postal_code = data['postal_code']
+      address.city = data['city']
     end
   end
 
