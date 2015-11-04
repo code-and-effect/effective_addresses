@@ -20,15 +20,15 @@ loadSubregions = ($countrySelect, clearPostalCode = false) ->
       $stateSelect.prop('disabled', true).addClass('disabled').parent('.form-group').addClass('disabled')
       $stateSelect.html('<option value="">Please choose a country first</option>')
     else
-      $stateSelect.prop('disabled', false).removeClass('disabled').parent('.form-group').removeClass('disabled')
+      $stateSelect.removeAttr('disabled').removeClass('disabled').parent('.form-group').removeClass('disabled')
       $stateSelect.find('option').first().text('loading...')
       $stateSelect.load url, ->
         stateSelectAvailable = $(@).find('option:last').val().length > 0
         if stateSelectAvailable
           $(@).prop('required', true)
-          $(@).prop('disabled', false)
+          $(@).removeAttr('disabled')
         else
-          $(@).prop('required', false)
+          $(@).removeAttr('required')
           $(@).prop('disabled', true)
 
 $(document).on 'change', 'select[data-effective-address-country]', -> loadSubregions($(@), true)
