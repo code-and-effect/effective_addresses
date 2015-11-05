@@ -1,5 +1,3 @@
-require 'carmen-rails'
-
 module EffectiveAddressesHelper
   @@use_geocoder = defined?(Geocoder)
 

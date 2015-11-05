@@ -1,5 +1,7 @@
-require "effective_addresses/engine"
-require "effective_addresses/version"
+require 'haml-rails'
+require 'carmen'
+require 'carmen-rails'
+require 'effective_addresses/engine'
 
 module EffectiveAddresses
 

@@ -1,5 +1,3 @@
-require 'carmen'
-
 module Effective
   class Address < ActiveRecord::Base
     self.table_name = EffectiveAddresses.addresses_table_name.to_s

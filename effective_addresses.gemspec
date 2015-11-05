@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
   s.add_dependency "carmen"
   s.add_dependency "carmen-rails"
   s.add_dependency "coffee-rails"
-  s.add_dependency "haml"
+  s.add_dependency "haml-rails"
 
   s.add_development_dependency "rspec-rails", '~> 3.0'
   s.add_development_dependency "factory_girl_rails"
