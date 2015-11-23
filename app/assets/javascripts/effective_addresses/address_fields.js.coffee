@@ -17,10 +17,10 @@ loadSubregions = ($countrySelect, clearPostalCode = false) ->
     $stateSelect = $container.find("select[data-effective-address-state='#{uuid}']:first")
 
     if countryCode.length == 0
-      $stateSelect.prop('disabled', true).addClass('disabled').parent('.form-group').addClass('disabled')
+      $stateSelect.prop('disabled', true).addClass('disabled').parent('.form-group').addClass('disabled').find('label').addClass('disabled')
       $stateSelect.html('<option value="">Please choose a country first</option>')
     else
-      $stateSelect.removeAttr('disabled').removeClass('disabled').parent('.form-group').removeClass('disabled')
+      $stateSelect.removeAttr('disabled').parent('.form-group').removeClass('disabled').find('.disabled').removeClass('disabled')
       $stateSelect.find('option').first().text('loading...')
       $stateSelect.load url, ->
         stateSelectAvailable = $(@).find('option:last').val().length > 0
@@ -32,6 +32,3 @@ loadSubregions = ($countrySelect, clearPostalCode = false) ->
           $(@).prop('disabled', true)
 
 $(document).on 'change', 'select[data-effective-address-country]', -> loadSubregions($(@), true)
-
-$ -> loadSubregions($('select[data-effective-address-country]'))
-$(document).on 'page:change', -> loadSubregions($('select[data-effective-address-country]'))
