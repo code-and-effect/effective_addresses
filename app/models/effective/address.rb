@@ -98,9 +98,13 @@ module Effective
     end
 
     # An address may be set with a category but nothing else
-    # This is considered empty
-    def empty?
-      !address1.present? && !address2.present? && !city.present? && !postal_code.present?
+    def blank?
+      address1.blank? && address2.blank? && city.blank? && postal_code.blank?
+    end
+    alias_method :empty?, :blank?
+
+    def present?
+      !blank?
     end
 
     def to_s
