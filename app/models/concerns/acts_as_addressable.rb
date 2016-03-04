@@ -87,7 +87,7 @@ module ActsAsAddressable
       :postal_code  => atts[:postal_code]
     )
 
-    self.addresses << add unless (add.empty? || add == effective_address(category))
+    self.addresses << add unless (add == effective_address(category))
   end
 
   def set_singular_effective_address(category, atts)
