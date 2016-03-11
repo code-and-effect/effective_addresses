@@ -10,25 +10,42 @@
     - case field
       - when :full_name
         - if use_full_name || fa.object.errors.include?(:full_name)
-          = fa.input :full_name, :required => required
+          = fa.input :full_name, required: required
 
       - when :address1
-        = fa.input :address1, :required => required
+        = fa.input :address1, required: required
 
       - when :address2
         = fa.input :address2
 
       - when :city
-        = fa.input :city, :input_html => { 'data-effective-address-city' => uuid }, :required => required
+        = fa.input :city, required: required, input_html: { 'data-effective-address-city' => uuid }
 
       - when :country_code
-        = fa.input :country_code, :as => :select, :collection => region_options_for_simple_form_select(), :input_html => {'data-effective-address-country' => uuid}, :required => required
+        = fa.input :country_code,
+          as: (defined?(EffectiveFormInputs) ? :effective_select : :select),
+          required: required,
+          collection: region_options_for_simple_form_select(),
+          input_html: {'data-effective-address-country' => uuid}
 
       - when :state_code
         - if fa.object.try(:country_code).present?
-          = fa.input :state_code, :as => :select, :collection => region_options_for_simple_form_select(Carmen::Country.coded(fa.object.country_code).subregions), :input_html => {'data-effective-address-state' => uuid}, :required => required
+          = fa.input :state_code,
+            as: (defined?(EffectiveFormInputs) ? :effective_select : :select),
+            required: required,
+            collection: region_options_for_simple_form_select(Carmen::Country.coded(fa.object.country_code).subregions),
+            prompt: 'Please choose',
+            input_html: {'data-effective-address-state' => uuid},
+            input_js: { placeholder: 'Please choose' }
         - else
-          = fa.input :state_code, :as => :select, :disabled => true, :collection => [], :input_html => { 'data-effective-address-state' => uuid }, :required => required
+          = fa.input :state_code,
+            as: (defined?(EffectiveFormInputs) ? :effective_select : :select),
+            required: required,
+            disabled: true,
+            collection: [],
+            prompt: 'Please choose a country first',
+            input_html: { 'data-effective-address-state' => uuid },
+            input_js: { placeholder: 'Please choose a country first' }
 
       - when :postal_code
-        = fa.input :postal_code, :input_html => { 'data-effective-address-postal-code' => uuid }, :required => required
+        = fa.input :postal_code, required: required, input_html: { 'data-effective-address-postal-code' => uuid }
