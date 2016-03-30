@@ -72,30 +72,22 @@ module ActsAsAddressable
   end
 
   def set_effective_address(category, atts)
-    unless (atts.kind_of?(Effective::Address) || atts.kind_of?(Hash) || atts == nil)
-      raise ArgumentError.new("Effective::Address #{category}_address= expecting an Effective::Address or Hash of attributes")
-    end
+    raise ArgumentError.new("Effective::Address #{category}_address= expecting an Effective::Address or Hash of attributes") unless (atts.kind_of?(Effective::Address) || atts.kind_of?(Hash) || atts == nil)
 
-    if atts.kind_of?(Effective::Address)
-      atts[:category] = category.to_s
-      self.addresses << atts unless (atts == effective_address(category))
-    else # We're set from a form
-      atts = HashWithIndifferentAccess.new(atts)
+    atts = HashWithIndifferentAccess.new(atts.kind_of?(Effective::Address) ? atts.attributes : atts)
 
-      add = Effective::Address.new(
-        :category     => category.to_s,
-        :full_name    => atts[:full_name],
-        :address1     => atts[:address1],
-        :address2     => atts[:address2],
-        :city         => atts[:city],
-        :state_code   => atts[:state_code],
-        :country_code => atts[:country_code],
-        :postal_code  => atts[:postal_code]
-      )
+    add = Effective::Address.new(
+      :category     => category.to_s,
+      :full_name    => atts[:full_name],
+      :address1     => atts[:address1],
+      :address2     => atts[:address2],
+      :city         => atts[:city],
+      :state_code   => atts[:state_code],
+      :country_code => atts[:country_code],
+      :postal_code  => atts[:postal_code]
+    )
 
-      self.addresses << add unless (add.blank? || add == effective_address(category))
-    end
-
+    self.addresses << add unless (add == effective_address(category))
   end
 
   def set_singular_effective_address(category, atts)
