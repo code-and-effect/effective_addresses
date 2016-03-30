@@ -72,7 +72,9 @@ module ActsAsAddressable
   end
 
   def set_effective_address(category, atts)
-    raise ArgumentError.new("Effective::Address #{category}_address= expecting an Effective::Address or Hash of attributes") unless (atts.kind_of?(Effective::Address) || atts.kind_of?(Hash) || atts == nil)
+    unless (atts.kind_of?(Effective::Address) || atts.kind_of?(Hash) || atts == nil)
+      raise ArgumentError.new("Effective::Address #{category}_address= expecting an Effective::Address or Hash of attributes")
+    end
 
     atts = HashWithIndifferentAccess.new(atts.kind_of?(Effective::Address) ? atts.attributes : atts)
 
