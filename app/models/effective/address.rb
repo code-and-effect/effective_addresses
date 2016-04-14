@@ -7,9 +7,8 @@ module Effective
 
     belongs_to :addressable, :polymorphic => true, :touch => true
 
-    validates_presence_of :category, :address1, :city, :country_code, :postal_code
-
-    validates_presence_of :state_code, :if => Proc.new { |address| address.country_code.blank? || Carmen::Country.coded(address.country_code).try(:subregions).present? }
+    validates :category, :address1, :city, :country_code, :postal_code, presence: true, if: Proc.new { |address| address.present? }
+    validates :state_code, presence: true, if: Proc.new { |address| address.present? && (address.country_code.blank? || Carmen::Country.coded(address.country_code).try(:subregions).present?) }
 
     validates_format_of :postal_code, :with => POSTAL_CODE_CA,
       :if => proc { |address| Array(EffectiveAddresses.validate_postal_code_format).include?('CA') && address.country_code == 'CA' },
