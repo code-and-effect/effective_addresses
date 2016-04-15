@@ -1,32 +1,55 @@
 = f.simple_fields_for method, (address || f.object.send(method) || f.object.addresses.build(:category => method.to_s.gsub('_address', ''))), (EffectiveAddresses.simple_form_options || {}) do |fa|
   - uuid = fa.object_id
   - method = method.to_sym
+  - shipping_address_same_as_billing = (fa.object.category == 'shipping') && (f.object.try(:shipping_address_same_as_billing?) || false)
 
   - if ((f.object.errors.include?(method) && !f.object.errors.include?(:addresses)) rescue false)
     - fa.object.errors.add(:address1, f.object.errors[method].first)
+
+  - if fa.object.category == 'shipping' && f.object.respond_to?(:shipping_address_same_as_billing?)
+    = fa.input :shipping_address_same_as_billing,
+      as: :boolean,
+      label: 'My shipping address is the same as my billing address',
+      required: false,
+      input_html: { checked: shipping_address_same_as_billing }
 
   - field_order.each do |field|
 
     - case field
       - when :full_name
         - if use_full_name || fa.object.errors.include?(:full_name)
-          = fa.input :full_name, required: required
+          = fa.input :full_name,
+            required: required,
+            disabled: shipping_address_same_as_billing,
+            wrapper_html: { style: ('display: none;' if shipping_address_same_as_billing) }
 
       - when :address1
-        = fa.input :address1, required: required
+        = fa.input :address1,
+          required: required,
+          disabled: shipping_address_same_as_billing,
+          wrapper_html: { style: ('display: none;' if shipping_address_same_as_billing) }
 
       - when :address2
-        = fa.input :address2
+        = fa.input :address2,
+          required: false,
+          disabled: shipping_address_same_as_billing,
+          wrapper_html: { style: ('display: none;' if shipping_address_same_as_billing) }
 
       - when :city
-        = fa.input :city, required: required, input_html: { 'data-effective-address-city' => uuid }
+        = fa.input :city,
+          required: required,
+          input_html: { 'data-effective-address-city' => uuid },
+          disabled: shipping_address_same_as_billing,
+          wrapper_html: { style: ('display: none;' if shipping_address_same_as_billing) }
 
       - when :country_code
         = fa.input :country_code,
           as: (defined?(EffectiveFormInputs) ? :effective_select : :select),
           required: required,
           collection: region_options_for_simple_form_select(),
-          input_html: {'data-effective-address-country' => uuid}
+          input_html: {'data-effective-address-country' => uuid},
+          disabled: shipping_address_same_as_billing,
+          wrapper_html: { style: ('display: none;' if shipping_address_same_as_billing) }
 
       - when :state_code
         - if fa.object.try(:country_code).present?
@@ -36,16 +59,24 @@
             collection: region_options_for_simple_form_select(Carmen::Country.coded(fa.object.country_code).subregions),
             prompt: 'Please choose',
             input_html: {'data-effective-address-state' => uuid},
-            input_js: { placeholder: 'Please choose' }
+            input_js: { placeholder: 'Please choose' },
+            disabled: shipping_address_same_as_billing,
+            wrapper_html: { style: ('display: none;' if shipping_address_same_as_billing) }
         - else
           = fa.input :state_code,
             as: (defined?(EffectiveFormInputs) ? :effective_select : :select),
             required: required,
-            disabled: true,
             collection: [],
             prompt: 'Please choose a country first',
             input_html: { 'data-effective-address-state' => uuid },
-            input_js: { placeholder: 'Please choose a country first' }
+            input_js: { placeholder: 'Please choose a country first' },
+            disabled: true,
+            wrapper_html: { style: ('display: none;' if shipping_address_same_as_billing) }
 
       - when :postal_code
-        = fa.input :postal_code, required: required, input_html: { 'data-effective-address-postal-code' => uuid }
+        = fa.input :postal_code,
+          required: required,
+          input_html: { 'data-effective-address-postal-code' => uuid },
+          disabled: shipping_address_same_as_billing,
+          wrapper_html: { style: ('display: none;' if shipping_address_same_as_billing) }
+

@@ -1,11 +1,12 @@
 module Effective
   class Address < ActiveRecord::Base
     self.table_name = EffectiveAddresses.addresses_table_name.to_s
+    attr_accessor :shipping_address_same_as_billing
 
     POSTAL_CODE_CA = /\A[A-Z]{1}\d{1}[A-Z]{1}\ \d{1}[A-Z]{1}\d{1}\z/  # Matches 'T5Z 2B1'
     POSTAL_CODE_US = /\A\d{5}\z/ # Matches 5 digits
 
-    belongs_to :addressable, :polymorphic => true, :touch => true
+    belongs_to :addressable, polymorphic: true, touch: true
 
     validates :category, :address1, :city, :country_code, :postal_code, presence: true, if: Proc.new { |address| address.present? }
     validates :state_code, presence: true, if: Proc.new { |address| address.present? && (address.country_code.blank? || Carmen::Country.coded(address.country_code).try(:subregions).present?) }
@@ -91,7 +92,7 @@ module Effective
       self_attrs = self.attributes
       other_attrs = other_address.respond_to?(:attributes) ? other_address.attributes : {}
 
-      [self_attrs, other_attrs].each { |attrs| attrs.except!('id', 'created_at', 'updated_at', 'addressable_type', 'addressable_id') }
+      [self_attrs, other_attrs].each { |attrs| attrs.except!('id', 'created_at', 'updated_at', 'addressable_type', 'addressable_id', 'category') }
 
       self_attrs == other_attrs
     end
@@ -120,5 +121,10 @@ module Effective
     def to_html
       to_s.gsub(/\n/, "<br>\n").gsub('  ', '&nbsp;&nbsp;').html_safe
     end
+
+    def shipping_address_same_as_billing?
+      ::ActiveRecord::ConnectionAdapters::Column::TRUE_VALUES.include?(self.shipping_address_same_as_billing)
+    end
+
   end
 end
