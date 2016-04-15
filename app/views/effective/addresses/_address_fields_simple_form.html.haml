@@ -76,7 +76,7 @@
   - if fa.object.category == 'shipping' && f.object.respond_to?(:shipping_address_same_as_billing?)
     = fa.input :shipping_address_same_as_billing,
       as: :boolean,
-      label: 'My shipping address is the same as my billing address',
+      label: 'Shipping address is same as billing address',
       required: false,
       input_html: { checked: shipping_address_same_as_billing }
 
