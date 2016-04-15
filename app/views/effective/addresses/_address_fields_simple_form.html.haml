@@ -6,13 +6,6 @@
   - if ((f.object.errors.include?(method) && !f.object.errors.include?(:addresses)) rescue false)
     - fa.object.errors.add(:address1, f.object.errors[method].first)
 
-  - if fa.object.category == 'shipping' && f.object.respond_to?(:shipping_address_same_as_billing?)
-    = fa.input :shipping_address_same_as_billing,
-      as: :boolean,
-      label: 'My shipping address is the same as my billing address',
-      required: false,
-      input_html: { checked: shipping_address_same_as_billing }
-
   - field_order.each do |field|
 
     - case field
@@ -79,4 +72,11 @@
           input_html: { 'data-effective-address-postal-code' => uuid },
           disabled: shipping_address_same_as_billing,
           wrapper_html: { style: ('display: none;' if shipping_address_same_as_billing) }
+
+  - if fa.object.category == 'shipping' && f.object.respond_to?(:shipping_address_same_as_billing?)
+    = fa.input :shipping_address_same_as_billing,
+      as: :boolean,
+      label: 'My shipping address is the same as my billing address',
+      required: false,
+      input_html: { checked: shipping_address_same_as_billing }
 
