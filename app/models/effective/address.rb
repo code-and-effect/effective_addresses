@@ -123,8 +123,11 @@ module Effective
     end
 
     def shipping_address_same_as_billing?
-      ::ActiveRecord::ConnectionAdapters::Column::TRUE_VALUES.include?(self.shipping_address_same_as_billing)
+      if defined?(::ActiveRecord::ConnectionAdapters::Column::TRUE_VALUES)  # Rails 5
+        ::ActiveRecord::ConnectionAdapters::Column::TRUE_VALUES.include?(self.shipping_address_same_as_billing)
+      else
+        ActiveRecord::Type::Boolean.new.cast(self.shipping_address_same_as_billing)
+      end
     end
-
   end
 end

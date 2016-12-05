@@ -8,7 +8,7 @@ module Effective
       if @subregions.present?
         render :partial => 'effective/addresses/subregions'
       else
-        render :text => "<option value=''>None Available</option>"
+        render :body => "<option value=''>None Available</option>"
       end
     end
   end

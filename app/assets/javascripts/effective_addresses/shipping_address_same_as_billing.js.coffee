@@ -2,6 +2,7 @@ $(document).on 'change', "input[name$='[shipping_address][shipping_address_same_
   $obj = $(event.currentTarget)
 
   shipping_fields = $obj.closest('form').find("
+    div[class*='_shipping_address_full_name'],
     div[class*='_shipping_address_address1'],
     div[class*='_shipping_address_address2'],
     div[class*='_shipping_address_city'],

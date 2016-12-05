@@ -18,12 +18,14 @@
 
       - when :address1
         = fa.input :address1,
+          label: 'Address',
           required: required,
           disabled: shipping_address_same_as_billing,
           wrapper_html: { style: ('display: none;' if shipping_address_same_as_billing) }
 
       - when :address2
         = fa.input :address2,
+          label: false,
           required: false,
           disabled: shipping_address_same_as_billing,
           wrapper_html: { style: ('display: none;' if shipping_address_same_as_billing) }
