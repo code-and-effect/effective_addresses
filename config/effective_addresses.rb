@@ -7,7 +7,7 @@ EffectiveAddresses.setup do |config|
   config.use_full_name = true
 
   # Country codes to display in country_select dropdowns.
-  config.country_codes = :all #
+  config.country_codes = :all
   #config.country_codes = ['US', 'CA'] # Or you can be more selective...
 
   # Select these countries ontop of the others

@@ -166,8 +166,8 @@ The actual permitted parameters are:
 ### Form Helpers
 
 Use the helper in a Formtastic or SimpleForm form to quickly create the address fields. Currently only supports Formtastic and SimpleForm.
-                                                                                       
-When you select a country from the select input an AJAX GET request will be made to `effective_addresses.address_subregions_path` (`/addresses/subregions/:country_code`) 
+
+When you select a country from the select input an AJAX GET request will be made to `effective_addresses.address_subregions_path` (`/addresses/subregions/:country_code`)
 which populates the province/state dropdown with the selected country's states or provinces.
 
 
@@ -219,14 +219,14 @@ Geocoder.configure(
     # Remote IP address geocoding service (see below for supported options):
     #    https://github.com/alexreisner/geocoder#ip-address-services
     ip_lookup: :telize,
-    
+
     # Local IP address file database:
     # 1. gem 'maxminddb'
     # 2. download database: http://dev.maxmind.com/geoip/geoip2/geolite2/
     # 3. save file in db/geocoder
     # ip_lookup: :geoip2,
     # geoip2: { file: File.expand_path('../../db/geocoder/GeoLite2-City.mmdb', File.dirname(__FILE__)) },
-    
+
     cache: Rails.cache,
     cache_prefix: 'geocoder:'
 )
@@ -253,9 +253,6 @@ end
 ## License
 
 MIT License.  Copyright [Code and Effect Inc.](http://www.codeandeffect.com/)
-
-Code and Effect is the product arm of [AgileStyle](http://www.agilestyle.com/), an Edmonton-based shop that specializes in building custom web applications with Ruby on Rails.
-
 
 ## Testing
 
