@@ -41,5 +41,4 @@ EffectiveAddresses.setup do |config|
   #     :radio_buttons => :horizontal_radio_and_checkboxes
   #   }
   # }
-
 end

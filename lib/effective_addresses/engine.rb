@@ -21,7 +21,7 @@ module EffectiveAddresses
 
     # Set up our default configuration options.
     initializer "effective_addresses.defaults", :before => :load_config_initializers do |app|
-      eval File.read("#{config.root}/lib/generators/templates/effective_addresses.rb")
+      eval File.read("#{config.root}/config/effective_addresses.rb")
     end
 
   end
