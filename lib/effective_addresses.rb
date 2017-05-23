@@ -1,4 +1,3 @@
-require 'haml-rails'
 require 'carmen'
 require 'carmen-rails'
 require 'effective_addresses/engine'
