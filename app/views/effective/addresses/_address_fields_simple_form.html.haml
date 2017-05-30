@@ -25,7 +25,7 @@
 
       - when :address2
         = fa.input :address2,
-          label: false,
+          label: (Array((f.options[:html] || {})[:class]).include?('form-horizontal') ? '&nbsp;'.html_safe : false),
           required: false,
           disabled: shipping_address_same_as_billing,
           wrapper_html: { style: ('display: none;' if shipping_address_same_as_billing) }
