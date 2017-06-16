@@ -58,13 +58,6 @@ module ActsAsAddressable
 
     if ((categories.try(:keys) rescue nil) || categories).include?('billing') && ((categories.try(:keys) rescue nil) || categories).include?('shipping')
       self.send(:define_method, :shipping_address_same_as_billing?) { billing_address == shipping_address }
-
-      before_validation do
-        if @_effective_addresses_shipping_address_same_as_billing
-          self.shipping_address = self.billing_address
-        end
-      end
-
     end
 
   end
@@ -82,15 +75,11 @@ module ActsAsAddressable
   end
 
   def set_effective_address(category, atts)
-    unless (atts.kind_of?(Effective::Address) || atts.kind_of?(Hash) || atts == nil)
-      raise ArgumentError.new("Effective::Address #{category}_address= expecting an Effective::Address or Hash of attributes")
-    end
+    raise "#{category}_address= expected an Effective::Address or Hash" unless atts.kind_of?(Effective::Address) || atts.kind_of?(Hash)
 
-    atts = HashWithIndifferentAccess.new(atts.kind_of?(Effective::Address) ? atts.attributes : atts)
+    atts = (atts.kind_of?(Effective::Address) ? atts.attributes : atts).symbolize_keys
 
-    return if atts[:address1].blank?
-
-    add = Effective::Address.new(
+    address = Effective::Address.new(
       :category     => category.to_s,
       :full_name    => atts[:full_name],
       :address1     => atts[:address1],
@@ -102,35 +91,44 @@ module ActsAsAddressable
       :shipping_address_same_as_billing => atts[:shipping_address_same_as_billing]
     )
 
-    if category == 'shipping' && add.shipping_address_same_as_billing?
-      @_effective_addresses_shipping_address_same_as_billing = true
-      return
+    if category == 'shipping' && address.shipping_address_same_as_billing? && respond_to?(:billing_address)
+      address = effective_address('billing')
     end
 
-    self.addresses.build(add.attributes) unless (add == effective_address(category))
+    address == effective_address(category) ? effective_address(category) : self.addresses.build(address.attributes)
   end
 
   def set_singular_effective_address(category, atts)
-    raise ArgumentError.new("Effective::Address #{category}_address= expecting an Effective::Address or Hash of attributes") unless (atts.kind_of?(Effective::Address) || atts.kind_of?(Hash) || atts == nil)
+    raise "#{category}_address= expected an Effective::Address or Hash" unless atts.kind_of?(Effective::Address) || atts.kind_of?(Hash)
 
-    atts = HashWithIndifferentAccess.new(atts.kind_of?(Effective::Address) ? atts.attributes : atts)
+    atts = (atts.kind_of?(Effective::Address) ? atts.attributes : atts).symbolize_keys
 
-    return if atts[:address1].blank?
+    address = Effective::Address.new(
+      :category     => category.to_s,
+      :full_name    => atts[:full_name],
+      :address1     => atts[:address1],
+      :address2     => atts[:address2],
+      :city         => atts[:city],
+      :state_code   => atts[:state_code],
+      :country_code => atts[:country_code],
+      :postal_code  => atts[:postal_code],
+      :shipping_address_same_as_billing => atts[:shipping_address_same_as_billing]
+    )
 
-    add = (effective_address(category) || self.addresses.build()).tap do |existing|
-      existing.category     = category.to_s
-      existing.full_name    = atts[:full_name]
-      existing.address1     = atts[:address1]
-      existing.address2     = atts[:address2]
-      existing.city         = atts[:city]
-      existing.state_code   = atts[:state_code]
-      existing.country_code = atts[:country_code]
-      existing.postal_code  = atts[:postal_code]
-      existing.shipping_address_same_as_billing = atts[:shipping_address_same_as_billing]
+    if category == 'shipping' && address.shipping_address_same_as_billing? && respond_to?(:billing_address)
+      address = effective_address('billing')
     end
 
-    if category == 'shipping' && add.shipping_address_same_as_billing?
-      @_effective_addresses_shipping_address_same_as_billing = true
+    (effective_address(category) || self.addresses.build).tap do |existing|
+      existing.category     = category.to_s
+      existing.full_name    = address.full_name
+      existing.address1     = address.address1
+      existing.address2     = address.address2
+      existing.city         = address.city
+      existing.state_code   = address.state_code
+      existing.country_code = address.country_code
+      existing.postal_code  = address.postal_code
+      existing.shipping_address_same_as_billing = address.shipping_address_same_as_billing?
     end
 
   end
