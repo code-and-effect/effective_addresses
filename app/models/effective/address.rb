@@ -21,8 +21,7 @@ module Effective
       :allow_blank => true,  # We're already checking for presence above
       :message => 'is an invalid United States zip code'
 
-    default_scope -> { order(:updated_at) }
-
+    scope :sorted, -> { order(:updated_at) }
     scope :billing, -> { where(:category => 'billing') }
     scope :shipping, -> { where(:category => 'shipping') }
 

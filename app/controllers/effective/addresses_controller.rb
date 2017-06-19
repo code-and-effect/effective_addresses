@@ -6,9 +6,9 @@ module Effective
       @subregions = Carmen::Country.coded(params[:country_code]).try(:subregions)
 
       if @subregions.present?
-        render :partial => 'effective/addresses/subregions'
+        render partial: 'effective/addresses/subregions'
       else
-        render :body => "<option value=''>None Available</option>"
+        render body: "<option value=''>None Available</option>"
       end
     end
   end

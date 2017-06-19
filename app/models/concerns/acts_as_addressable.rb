@@ -11,7 +11,7 @@ module ActsAsAddressable
   end
 
   included do
-    has_many :addresses, as: :addressable, class_name: 'Effective::Address', dependent: :delete_all, autosave: true
+    has_many :addresses, -> { order(:updated_at) }, as: :addressable, class_name: 'Effective::Address', dependent: :delete_all, autosave: true
 
     # Normalize categories
     categories = @acts_as_addressable_opts.try(:flatten) || []
@@ -74,50 +74,42 @@ module ActsAsAddressable
     effective_addresses(category).last
   end
 
-  def set_effective_address(category, atts)
-    raise "#{category}_address= expected an Effective::Address or Hash" unless atts.kind_of?(Effective::Address) || atts.kind_of?(Hash)
+  def set_effective_address(category, obj)
+    raise "#{category}_address= expected an Effective::Address or Hash" unless obj.kind_of?(Effective::Address) || obj.kind_of?(Hash)
 
-    atts = (atts.kind_of?(Effective::Address) ? atts.attributes : atts).symbolize_keys
-
-    address = Effective::Address.new(
-      :category     => category.to_s,
-      :full_name    => atts[:full_name],
-      :address1     => atts[:address1],
-      :address2     => atts[:address2],
-      :city         => atts[:city],
-      :state_code   => atts[:state_code],
-      :country_code => atts[:country_code],
-      :postal_code  => atts[:postal_code],
-      :shipping_address_same_as_billing => atts[:shipping_address_same_as_billing]
-    )
+    address = (obj.kind_of?(Effective::Address) ? obj : Effective::Address.new(obj))
 
     if category == 'shipping' && address.shipping_address_same_as_billing? && respond_to?(:billing_address)
       address = effective_address('billing')
     end
 
-    address == effective_address(category) ? effective_address(category) : self.addresses.build(address.attributes)
+    # Prevents duplicates from being created
+    return effective_address(category) if address == effective_address(category)
+
+    (self.addresses.build).tap do |existing|
+      existing.category     = category.to_s
+      existing.full_name    = address.full_name
+      existing.address1     = address.address1
+      existing.address2     = address.address2
+      existing.city         = address.city
+      existing.state_code   = address.state_code
+      existing.country_code = address.country_code
+      existing.postal_code  = address.postal_code
+      existing.shipping_address_same_as_billing = address.shipping_address_same_as_billing?
+    end
   end
 
-  def set_singular_effective_address(category, atts)
-    raise "#{category}_address= expected an Effective::Address or Hash" unless atts.kind_of?(Effective::Address) || atts.kind_of?(Hash)
+  def set_singular_effective_address(category, obj)
+    raise "#{category}_address= expected an Effective::Address or Hash" unless obj.kind_of?(Effective::Address) || obj.kind_of?(Hash)
 
-    atts = (atts.kind_of?(Effective::Address) ? atts.attributes : atts).symbolize_keys
-
-    address = Effective::Address.new(
-      :category     => category.to_s,
-      :full_name    => atts[:full_name],
-      :address1     => atts[:address1],
-      :address2     => atts[:address2],
-      :city         => atts[:city],
-      :state_code   => atts[:state_code],
-      :country_code => atts[:country_code],
-      :postal_code  => atts[:postal_code],
-      :shipping_address_same_as_billing => atts[:shipping_address_same_as_billing]
-    )
+    address = (obj.kind_of?(Effective::Address) ? obj : Effective::Address.new(obj))
 
     if category == 'shipping' && address.shipping_address_same_as_billing? && respond_to?(:billing_address)
       address = effective_address('billing')
     end
+
+    # This wouldn't create duplicates anyway
+    return effective_address(category) if address == effective_address(category)
 
     (effective_address(category) || self.addresses.build).tap do |existing|
       existing.category     = category.to_s
@@ -130,7 +122,6 @@ module ActsAsAddressable
       existing.postal_code  = address.postal_code
       existing.shipping_address_same_as_billing = address.shipping_address_same_as_billing?
     end
-
   end
 
 end

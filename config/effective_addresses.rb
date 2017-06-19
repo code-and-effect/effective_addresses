@@ -33,7 +33,7 @@ EffectiveAddresses.setup do |config|
   config.simple_form_options = {}
 
   # config.simple_form_options = {
-  #   :html => {:class => 'form-horizontal'},
+  #   :html => {:class => ['form-horizontal']},
   #   :wrapper => :horizontal_form,
   #   :wrapper_mappings => {
   #     :boolean => :horizontal_boolean,
