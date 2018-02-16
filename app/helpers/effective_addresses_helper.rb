@@ -7,17 +7,20 @@ module EffectiveAddressesHelper
     required = (form.object._validators[method.to_sym].any? { |v| v.kind_of?(ActiveRecord::Validations::PresenceValidator) && (v.options[:if].blank? || (v.options[:if].respond_to?(:call) ? f.object.instance_exec(&v.options[:if]) : v.options[:if])) } rescue true)
     use_full_name = form.object._validators[method.to_sym].any? { |v| v.kind_of?(EffectiveAddressFullNamePresenceValidator) }
 
-    address = form.object.send(method) || form.object.addresses.build(:category => method.to_s.gsub('_address', ''))
+    address = form.object.send(method) || form.object.addresses.build(category: method.to_s.gsub('_address', ''))
     effective_address_pre_select(address) if address.new_record?
 
-    opts = {:required => required, :use_full_name => use_full_name, :field_order => [:full_name, :address1, :address2, :city, :country_code, :state_code, :postal_code]}.merge(options).merge({:f => form, :address => address, :method => method})
+    opts = { required: required, use_full_name: use_full_name, field_order: [:full_name, :address1, :address2, :city, :country_code, :state_code, :postal_code] }.merge(options).merge({:f => form, :address => address, :method => method})
 
-    if form.class.name == 'SimpleForm::FormBuilder'
-      render :partial => 'effective/addresses/address_fields_simple_form', :locals => opts
-    elsif form.class.name == 'Formtastic::FormBuilder'
-      render :partial => 'effective/addresses/address_fields_formtastic', :locals => opts
+    case form.class.name
+    when 'Effective::FormBuilder'
+      render partial: 'effective/addresses/form_with', locals: opts
+    when 'SimpleForm::FormBuilder'
+      render partial: 'effective/addresses/simple_form', locals: opts
+    when 'Formtastic::FormBuilder'
+      render partial: 'effective/addresses/formtastic', locals: opts
     else
-      raise 'Unsupported FormBuilder.  You must use formtastic or simpleform. Sorry.'
+      raise 'Unsupported FormBuilder.  You must use formtastic, simpleform or effective_bootstrap. Sorry.'
     end
   end
 
