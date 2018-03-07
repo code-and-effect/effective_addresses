@@ -22,4 +22,4 @@ en:
     prompts:
       defaults:
         country_code: Choose country...
-        state_code: Please choose a country first
+        state_code: Please choose country first

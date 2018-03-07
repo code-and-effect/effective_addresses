@@ -18,7 +18,7 @@ loadSubregions = ($countrySelect, clearPostalCode = false) ->
 
     if countryCode.length == 0
       $stateSelect.prop('disabled', true).addClass('disabled').parent('.form-group').addClass('disabled').find('label').addClass('disabled')
-      reinitialize($stateSelect, 'Please choose a country first')
+      reinitialize($stateSelect, 'Please choose country first')
     else
       $stateSelect.removeAttr('disabled').parent('.form-group').removeClass('disabled').find('.disabled').removeClass('disabled')
       reinitialize($stateSelect, 'Loading...')
