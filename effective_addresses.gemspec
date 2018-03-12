@@ -15,9 +15,8 @@ Gem::Specification.new do |s|
   s.licenses    = ['MIT']
 
   s.files = Dir['{app,config,db,lib}/**/*'] + ['MIT-LICENSE', 'README.md']
-  s.test_files = Dir['spec/**/*']
 
-  s.add_dependency 'rails', ['>= 3.2.0']
+  s.add_dependency 'rails', '>= 3.2.0'
   s.add_dependency 'carmen-rails'
   s.add_dependency 'coffee-rails'
 end
