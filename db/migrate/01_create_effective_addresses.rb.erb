@@ -7,6 +7,10 @@ class CreateEffectiveAddresses < ActiveRecord::Migration[4.2]
       t.string :full_name
       t.string :address1
       t.string :address2
+
+      # Uncomment this if you want 3 address fields
+      # t.string :address3
+
       t.string :city
       t.string :state_code
       t.string :country_code

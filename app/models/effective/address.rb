@@ -111,6 +111,7 @@ module Effective
       output += "#{full_name}\n" if full_name.present?
       output += "#{address1}\n" if address1.present?
       output += "#{address2}\n" if address2.present?
+      output += "#{address3}\n" if respond_to?(:address3) && address3.present?
       output += [city.presence, state_code.presence, " #{postal_code.presence}"].compact.join(' ')
       output += "\n"
       output += country.to_s

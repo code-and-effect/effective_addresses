@@ -5,6 +5,7 @@ $(document).on 'change', "input[name$='[shipping_address][shipping_address_same_
     div[class*='_shipping_address_full_name'],
     div[class*='_shipping_address_address1'],
     div[class*='_shipping_address_address2'],
+    div[class*='_shipping_address_address3'],
     div[class*='_shipping_address_city'],
     div[class*='_shipping_address_country_code'],
     div[class*='_shipping_address_state_code'],

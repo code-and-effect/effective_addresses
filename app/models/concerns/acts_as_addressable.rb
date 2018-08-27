@@ -91,6 +91,7 @@ module ActsAsAddressable
       existing.full_name    = address.full_name
       existing.address1     = address.address1
       existing.address2     = address.address2
+      existing.address3     = address.address3 if address.respond_to?(:address3)
       existing.city         = address.city
       existing.state_code   = address.state_code
       existing.country_code = address.country_code
@@ -116,6 +117,7 @@ module ActsAsAddressable
       existing.full_name    = address.full_name
       existing.address1     = address.address1
       existing.address2     = address.address2
+      existing.address3     = address.address3 if address.respond_to?(:address3)
       existing.city         = address.city
       existing.state_code   = address.state_code
       existing.country_code = address.country_code

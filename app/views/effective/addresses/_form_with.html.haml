@@ -26,6 +26,13 @@
     disabled: same_as_billing,
     wrapper: wrapper_options
 
+  - if fa.object.respond_to?(:address3)
+    = fa.text_field :address3,
+      label: false,
+      required: false,
+      disabled: same_as_billing,
+      wrapper: wrapper_options
+
   = fa.text_field :city,
     required: required,
     disabled: same_as_billing,

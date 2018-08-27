@@ -5,6 +5,7 @@ en:
         full_name: Full name
         address1: Address 1
         address2: Address 2
+        address3: Address 3
         country_code: Country
         state_code: Province / State
         postal_code: Postal / Zip code
