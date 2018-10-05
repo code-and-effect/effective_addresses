@@ -56,10 +56,14 @@ module ActsAsAddressable
       end
     end
 
-    if ((categories.try(:keys) rescue nil) || categories).include?('billing') && ((categories.try(:keys) rescue nil) || categories).include?('shipping')
+    # [:billing_address, :shipping_address]
+    address_names = (categories.respond_to?(:keys) ? categories.keys : categories).map { |category| (category.to_s + '_address').to_sym }
+
+    if address_names.include?(:billing_address) && address_names.include?(:shipping_address)
       self.send(:define_method, :shipping_address_same_as_billing?) { billing_address == shipping_address }
     end
 
+    self.send(:define_method, :effective_address_names) { address_names }
   end
 
   module ClassMethods

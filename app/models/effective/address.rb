@@ -149,7 +149,7 @@ module Effective
       if defined?(::ActiveRecord::ConnectionAdapters::Column::TRUE_VALUES)  # Rails 5
         ::ActiveRecord::ConnectionAdapters::Column::TRUE_VALUES.include?(shipping_address_same_as_billing)
       else
-        ActiveRecord::Type::Boolean.new.cast(shipping_address_same_as_billing)
+        ::ActiveRecord::Type::Boolean.new.cast(shipping_address_same_as_billing)
       end
     end
   end
