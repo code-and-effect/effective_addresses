@@ -41,7 +41,7 @@
         = fa.input :country_code,
           as: (defined?(EffectiveFormInputs) ? :effective_select : :select),
           required: required,
-          collection: region_options_for_simple_form_select(),
+          collection: effective_address_countries_collection(),
           input_html: {'data-effective-address-country' => uuid},
           disabled: shipping_address_same_as_billing,
           wrapper_html: { style: ('display: none;' if shipping_address_same_as_billing) }
@@ -51,7 +51,7 @@
           = fa.input :state_code,
             as: (defined?(EffectiveFormInputs) ? :effective_select : :select),
             required: required,
-            collection: region_options_for_simple_form_select(Carmen::Country.coded(fa.object.country_code).subregions),
+            collection: effective_address_regions_collection(Carmen::Country.coded(fa.object.country_code).subregions),
             prompt: 'Please choose',
             input_html: {'data-effective-address-state' => uuid},
             input_js: { placeholder: 'Please choose' },

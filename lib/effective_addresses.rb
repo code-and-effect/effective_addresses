@@ -20,7 +20,7 @@ module EffectiveAddresses
   end
 
   def self.permitted_params
-    [:address1, :address2, :city, :country_code, :state_code, :postal_code, :full_name, :shipping_address_same_as_billing]
+    [:address1, :address2, :address3, :city, :country_code, :state_code, :postal_code, :full_name, :shipping_address_same_as_billing]
   end
 
 end

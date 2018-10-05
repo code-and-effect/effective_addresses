@@ -11,7 +11,7 @@ EffectiveAddresses.setup do |config|
   #config.country_codes = ['US', 'CA'] # Or you can be more selective...
 
   # Select these countries ontop of the others
-  config.country_codes_priority = ['US', 'CA'] # nil for no priority countries
+  # config.country_codes_priority = ['US', 'CA']
 
   # Force this country to be preselected on any new address forms.
   # Valid values are: country code, country name, or nil.

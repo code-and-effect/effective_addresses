@@ -37,7 +37,7 @@ module EffectiveAddressesHelper
     end
   end
 
-  def region_options_for_simple_form_select(regions = nil)
+  def effective_address_regions_collection(regions = nil)
     if regions.present?
       countries = regions
     elsif EffectiveAddresses.country_codes == :all
@@ -46,20 +46,23 @@ module EffectiveAddressesHelper
       countries = Carmen::Country.all.select { |c| (EffectiveAddresses.country_codes || []).include?(c.code) }
     end
 
-    collection = countries.map { |c| [c.name, c.code] }.sort! { |a, b| a.first <=> b.first }
-
     if regions.blank? && EffectiveAddresses.country_codes_priority.present?
-      collection.insert(0, ['---------------------', '', :disabled])
-
-      EffectiveAddresses.country_codes_priority.reverse.each do |code|
-        if (country = Carmen::Country.coded(code))
-          collection.insert(0, [country.name, country.code])
-        end
-      end
+      countries = countries.reject { |c| EffectiveAddresses.country_codes_priority.include?(c.code) }
     end
 
-    collection
+    countries = countries.map { |c| [c.name, c.code] }
+
+    if regions.blank? && EffectiveAddresses.country_codes_priority.present?
+      countries = EffectiveAddresses.country_codes_priority
+        .map { |code| Carmen::Country.coded(code) }
+        .map { |country| [country.name, country.code ] } +
+        [['-------------------', '0', disabled: :disabled]] + countries
+    end
+
+    countries
   end
+  alias_method :effective_address_countries_collection, :effective_address_regions_collection
+  alias_method :region_options_for_simple_form_select, :effective_address_regions_collection
 
 end
 
