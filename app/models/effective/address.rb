@@ -10,8 +10,6 @@ module Effective
 
     if defined?(EffectiveResources)
       effective_resource do
-        addressable_type  :string
-
         category          :string
 
         full_name         :string

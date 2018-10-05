@@ -50,13 +50,15 @@ module EffectiveAddressesHelper
       countries = countries.reject { |c| EffectiveAddresses.country_codes_priority.include?(c.code) }
     end
 
-    countries = countries.map { |c| [c.name, c.code] }
+    countries = countries.map { |c| [c.name, c.code] }.sort! { |a, b| a.first <=> b.first }
 
     if regions.blank? && EffectiveAddresses.country_codes_priority.present?
-      countries = EffectiveAddresses.country_codes_priority
-        .map { |code| Carmen::Country.coded(code) }
-        .map { |country| [country.name, country.code ] } +
-        [['-------------------', '0', disabled: :disabled]] + countries
+      countries.unshift(*
+        EffectiveAddresses.country_codes_priority.map do |code|
+          country = Carmen::Country.coded(code)
+          [country.name, country.code]
+        end + [['-------------------', '-', disabled: :disabled]]
+      )
     end
 
     countries
