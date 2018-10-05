@@ -6,6 +6,9 @@ EffectiveAddresses.setup do |config|
   # (can be overridden on a per address basis)
   config.use_full_name = true
 
+  # A 3rd address field
+  config.use_address3 = false
+
   # Country codes to display in country_select dropdowns.
   config.country_codes = :all
   #config.country_codes = ['US', 'CA'] # Or you can be more selective...

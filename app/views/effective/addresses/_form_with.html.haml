@@ -26,7 +26,7 @@
     disabled: same_as_billing,
     wrapper: wrapper_options
 
-  - if fa.object.respond_to?(:address3)
+  - if fa.object.respond_to?(:address3) && EffectiveAddresses.use_address3
     = fa.text_field :address3,
       label: false,
       required: false,
