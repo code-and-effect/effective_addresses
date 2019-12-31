@@ -91,6 +91,7 @@ module ActsAsAddressable
     return effective_address(category) if address == effective_address(category)
 
     (self.addresses.build).tap do |existing|
+      existing.addressable  = self
       existing.category     = category.to_s
       existing.full_name    = address.full_name
       existing.address1     = address.address1
@@ -117,6 +118,7 @@ module ActsAsAddressable
     return effective_address(category) if address == effective_address(category)
 
     (effective_address(category) || self.addresses.build).tap do |existing|
+      existing.addressable  = self
       existing.category     = category.to_s
       existing.full_name    = address.full_name
       existing.address1     = address.address1
