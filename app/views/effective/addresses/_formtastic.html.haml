@@ -29,7 +29,7 @@
           :as => (defined?(EffectiveFormInputs) ? :effective_select : :select),
           :label => 'Country',
           :prompt => 'Country...',
-          :collection => region_options_for_select(EffectiveAddresses.country_codes == :all ? Carmen::Country.all : Carmen::Country.all.select{ |c| EffectiveAddresses.country_codes.include?(c.code) rescue true}, fa.object.country_code, :priority => EffectiveAddresses.country_codes_priority),
+          :collection => options_for_select(effective_address_regions_collection()),
           :input_html => { 'data-effective-address-country' => uuid },
           :input_js => { placeholder: 'Please choose' }
 
@@ -38,7 +38,7 @@
           = fa.input :state_code,
             :as => (defined?(EffectiveFormInputs) ? :effective_select : :select),
             :label => 'Province / State',
-            :collection => region_options_for_select(Carmen::Country.coded(fa.object.country_code).subregions, fa.object.state_code),
+            :collection => options_for_select(effective_address_regions_collection(Carmen::Country.coded(fa.object.country_code).subregions)),
             :prompt => 'please select a country',
             :input_html => { 'data-effective-address-state' => uuid },
             :input_js => { :placeholder => 'Please choose' }

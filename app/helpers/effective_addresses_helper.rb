@@ -63,8 +63,5 @@ module EffectiveAddressesHelper
 
     countries
   end
-  alias_method :effective_address_countries_collection, :effective_address_regions_collection
-  alias_method :region_options_for_simple_form_select, :effective_address_regions_collection
-
 end
 

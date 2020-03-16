@@ -41,7 +41,7 @@
         = fa.input :country_code,
           as: (defined?(EffectiveFormInputs) ? :effective_select : :select),
           required: required,
-          collection: effective_address_countries_collection(),
+          collection: effective_address_regions_collection(),
           input_html: {'data-effective-address-country' => uuid},
           disabled: shipping_address_same_as_billing,
           wrapper_html: { style: ('display: none;' if shipping_address_same_as_billing) }
