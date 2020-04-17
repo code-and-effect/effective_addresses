@@ -3,7 +3,7 @@
 module ActsAsAddressable
   extend ActiveSupport::Concern
 
-  module ActiveRecord
+  module Base
     def acts_as_addressable(*options)
       @acts_as_addressable_opts = options || []
       include ::ActsAsAddressable

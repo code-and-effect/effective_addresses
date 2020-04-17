@@ -8,7 +8,7 @@ module EffectiveAddresses
     # Include acts_as_addressable concern and allow any ActiveRecord object to call it
     initializer 'effective_addresses.active_record' do |app|
       ActiveSupport.on_load :active_record do
-        ActiveRecord::Base.extend(ActsAsAddressable::ActiveRecord)
+        ActiveRecord::Base.extend(ActsAsAddressable::Base)
       end
     end
 
