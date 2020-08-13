@@ -2,8 +2,8 @@ module EffectiveAddresses
   class Engine < ::Rails::Engine
     engine_name 'effective_addresses'
 
-    config.autoload_paths += Dir["#{config.root}/app/models/concerns"]
-    config.autoload_paths += Dir["#{config.root}/app/models/validators"]
+    config.autoload_paths += Dir["#{config.root}/lib/validators"]
+    config.eager_load_paths += Dir["#{config.root}/lib/validators"]
 
     # Include acts_as_addressable concern and allow any ActiveRecord object to call it
     initializer 'effective_addresses.active_record' do |app|
@@ -19,4 +19,3 @@ module EffectiveAddresses
 
   end
 end
-
