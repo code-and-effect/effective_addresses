@@ -50,7 +50,7 @@
 
     .col-md-5
       - if fa.object.try(:country_code).present?
-        = fa.select :state_code, effective_address_regions_collection(Carmen::Country.coded(fa.object.country_code).subregions),
+        = fa.select :state_code, effective_address_regions_collection(Carmen::Country.coded(fa.object.country_code).try(:subregions)),
           label: 'State / Province',
           required: required,
           disabled: same_as_billing,
