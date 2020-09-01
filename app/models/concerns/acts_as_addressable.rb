@@ -79,7 +79,7 @@ module ActsAsAddressable
   end
 
   def set_effective_address(category, obj)
-    raise "#{category}_address= expected an Effective::Address or Hash" unless obj.kind_of?(Effective::Address) || obj.kind_of?(Hash)
+    raise "#{category}_address= expected an Effective::Address or Hash" unless obj.respond_to?(:slice)
 
     address = (obj.kind_of?(Effective::Address) ? obj : Effective::Address.new(obj))
 
