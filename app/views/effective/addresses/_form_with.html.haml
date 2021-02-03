@@ -41,7 +41,7 @@
 
   .row
     .col-md-4
-      = fa.select :country_code, effective_address_regions_collection(),
+      = fa.select :country_code, effective_address_regions_collection(resource: fa.object),
         label: 'Country',
         required: required,
         disabled: same_as_billing,

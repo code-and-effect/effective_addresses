@@ -37,7 +37,7 @@ module EffectiveAddressesHelper
     end
   end
 
-  def effective_address_regions_collection(regions = nil)
+  def effective_address_regions_collection(regions = nil, resource: nil)
     if regions.present?
       countries = regions
     elsif EffectiveAddresses.country_codes == :all
@@ -61,7 +61,15 @@ module EffectiveAddressesHelper
       )
     end
 
+    # Special behaviour if the address has CAN, we treat it as CA
+    if regions.blank? && resource.present? && resource.country_code == 'CAN'
+      ca = countries.index { |_, code| code == 'CA' }
+
+      if ca.present?
+        countries[ca] = ['Canada', 'CAN']
+      end
+    end
+
     countries
   end
 end
-
