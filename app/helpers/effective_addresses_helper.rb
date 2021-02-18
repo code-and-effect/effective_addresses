@@ -1,6 +1,4 @@
 module EffectiveAddressesHelper
-  @@use_geocoder = defined?(Geocoder)
-
   def effective_address_fields(form, method = 'billing', options = {})
     method = (method.to_s.include?('_address') ? method.to_s : "#{method}_address")
 
@@ -28,7 +26,7 @@ module EffectiveAddressesHelper
     if EffectiveAddresses.pre_selected_country.present?
       address.country = EffectiveAddresses.pre_selected_country
       address.state = EffectiveAddresses.pre_selected_state if EffectiveAddresses.pre_selected_state.present?
-    elsif @@use_geocoder && request.location.present?
+    elsif defined?(Geocoder) && request.location.present?
       location = request.location
       address.country = location.country_code
       address.state = location.state_code

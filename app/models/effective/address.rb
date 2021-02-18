@@ -8,27 +8,25 @@ module Effective
 
     belongs_to :addressable, polymorphic: true, touch: true
 
-    if defined?(EffectiveResources)
-      effective_resource do
-        category          :string
+    effective_resource do
+      category          :string
 
-        full_name         :string
-        address1          :string
-        address2          :string
+      full_name         :string
+      address1          :string
+      address2          :string
 
-        if EffectiveAddresses.use_address3
-          address3          :string
-        end
-
-        city              :string
-        state_code        :string
-        country_code      :string
-        postal_code       :string
-
-        shipping_address_same_as_billing permitted: true
-
-        timestamps
+      if EffectiveAddresses.use_address3
+        address3          :string
       end
+
+      city              :string
+      state_code        :string
+      country_code      :string
+      postal_code       :string
+
+      shipping_address_same_as_billing permitted: true
+
+      timestamps
     end
 
     validates :category, :address1, :city, :country_code, :postal_code, presence: true, if: Proc.new { |address| address.present? }
