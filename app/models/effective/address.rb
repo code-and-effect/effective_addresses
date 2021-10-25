@@ -14,10 +14,7 @@ module Effective
       full_name         :string
       address1          :string
       address2          :string
-
-      if EffectiveAddresses.use_address3
-        address3          :string
-      end
+      address3          :string
 
       city              :string
       state_code        :string
