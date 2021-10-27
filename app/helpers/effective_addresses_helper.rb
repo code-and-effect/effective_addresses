@@ -3,12 +3,11 @@ module EffectiveAddressesHelper
     method = (method.to_s.include?('_address') ? method.to_s : "#{method}_address")
 
     required = (form.object._validators[method.to_sym].any? { |v| v.kind_of?(ActiveRecord::Validations::PresenceValidator) && (v.options[:if].blank? || (v.options[:if].respond_to?(:call) ? f.object.instance_exec(&v.options[:if]) : v.options[:if])) } rescue true)
-    use_full_name = form.object._validators[method.to_sym].any? { |v| v.kind_of?(EffectiveAddressFullNamePresenceValidator) }
 
     address = form.object.send(method) || form.object.addresses.build(category: method.to_s.gsub('_address', ''))
     effective_address_pre_select(address) if address.new_record?
 
-    opts = { required: required, use_full_name: use_full_name, field_order: [:full_name, :address1, :address2, :city, :country_code, :state_code, :postal_code] }.merge(options).merge({:f => form, :address => address, :method => method})
+    opts = { required: required, field_order: [:full_name, :address1, :address2, :city, :country_code, :state_code, :postal_code] }.merge(options).merge({:f => form, :address => address, :method => method})
 
     case form.class.name
     when 'Effective::FormBuilder'

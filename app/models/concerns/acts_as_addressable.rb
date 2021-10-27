@@ -23,7 +23,7 @@ module ActsAsAddressable
     end
 
     # Categories can be either:
-    # {'billing'=>{:singular=>true, :use_full_name=>false}, 'shipping'=>{:singular=>true, :use_full_name=>false}}
+    # {'billing'=>{:singular=>true}, 'shipping'=>{:singular=>true}}
     # or
     # {'billing' => true, 'shipping' => true}
     # or
@@ -46,11 +46,13 @@ module ActsAsAddressable
 
       case options
       when Hash
-        validates "#{category}_address", presence: options.fetch(:presence, false)
-        validates "#{category}_address", effective_address_full_name_presence: options.fetch(:use_full_name, EffectiveAddresses.use_full_name)
-      when TrueClass, FalseClass
-        validates "#{category}_address", presence: (options == true)
-        validates "#{category}_address", effective_address_full_name_presence: EffectiveAddresses.use_full_name
+        validates("#{category}_address", presence: true) if options[:presence]
+        validates("#{category}_address", effective_address_full_name_presence: true) if options[:use_full_name]
+      when TrueClass
+        validates "#{category}_address", presence: true
+        validates "#{category}_address", effective_address_full_name_presence: true, if: -> { EffectiveAddresses.use_full_name }
+      when FalseClass
+        # Nothing to do
       else
         raise 'Unexpected options. Expected a Hash or Boolean'
       end
@@ -133,4 +135,3 @@ module ActsAsAddressable
   end
 
 end
-

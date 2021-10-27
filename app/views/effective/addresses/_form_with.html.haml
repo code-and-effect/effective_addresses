@@ -8,7 +8,7 @@
   - if ((f.object.errors.include?(method) && !f.object.errors.include?(:addresses)) rescue false)
     = f.errors method
 
-  - if use_full_name || fa.object.errors.include?(:full_name)
+  - if EffectiveAddresses.use_full_name || fa.object.errors.include?(:full_name)
     = fa.text_field :full_name,
       required: required,
       disabled: same_as_billing,

@@ -89,7 +89,7 @@ or
 
 ```ruby
 class User
-  acts_as_addressable :billing => {:presence => true, :use_full_name => false}
+  acts_as_addressable :billing => {:presence => true}
 end
 ```
 
@@ -110,11 +110,7 @@ This means when a User is created, it will not be valid unless a billing_address
 
 Sometimes you want to collect a `full_name` field with your addresses, such as in the case of a mailing address; other times, it's an unnecessary field.
 
-When you specify the config option `config.use_full_name = true` all `acts_as_addressable` defined addresses will use `use_full_name => true` by default.
-
-This can be overridden on a per-address basis when declared in the model.
-
-When `use_full_name == true`, any calls to `effective_address_fields` form helper will display the full_name input, and the model will `validate_presence_of :full_name`.
+When you specify the config option `config.use_full_name = true` all, any calls to `effective_address_fields` form helper will display the full_name input, and the model will `validate_presence_of :full_name`.
 
 
 ### Address Validations

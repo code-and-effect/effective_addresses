@@ -10,7 +10,7 @@
 
     - case field
       - when :full_name
-        - if use_full_name || fa.object.errors.include?(:full_name)
+        - if EffectiveAddresses.use_full_name || fa.object.errors.include?(:full_name)
           = fa.input :full_name,
             required: required,
             disabled: shipping_address_same_as_billing,
@@ -81,4 +81,3 @@
       label: 'Shipping address is same as billing address',
       required: false,
       input_html: { checked: shipping_address_same_as_billing }
-
