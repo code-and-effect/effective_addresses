@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module EffectiveAddressesHelper
   def effective_address_fields(form, method = 'billing', options = {})
     method = (method.to_s.include?('_address') ? method.to_s : "#{method}_address")
