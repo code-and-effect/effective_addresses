@@ -51,7 +51,7 @@
           = fa.input :state_code,
             as: (defined?(EffectiveFormInputs) ? :effective_select : :select),
             required: required,
-            collection: effective_address_regions_collection(Carmen::Country.coded(fa.object.country_code).subregions),
+            collection: effective_address_regions_collection(Carmen::Country.coded(fa.object.country_code).try(:subregions)),
             prompt: 'Please choose',
             input_html: {'data-effective-address-state' => uuid},
             input_js: { placeholder: 'Please choose' },

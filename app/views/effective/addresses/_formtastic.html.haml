@@ -38,7 +38,7 @@
           = fa.input :state_code,
             :as => (defined?(EffectiveFormInputs) ? :effective_select : :select),
             :label => 'Province / State',
-            :collection => options_for_select(effective_address_regions_collection(Carmen::Country.coded(fa.object.country_code).subregions)),
+            :collection => options_for_select(effective_address_regions_collection(Carmen::Country.coded(fa.object.country_code).try(:subregions))),
             :prompt => 'please select a country',
             :input_html => { 'data-effective-address-state' => uuid },
             :input_js => { :placeholder => 'Please choose' }

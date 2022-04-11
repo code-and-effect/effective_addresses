@@ -37,12 +37,12 @@ module EffectiveAddressesHelper
   end
 
   def effective_address_regions_collection(regions = nil, resource: nil)
-    if regions.present?
-      countries = regions
+    countries = if regions.present?
+      regions
     elsif EffectiveAddresses.country_codes == :all
-      countries = Carmen::Country.all
+      Carmen::Country.all
     else
-      countries = Carmen::Country.all.select { |c| (EffectiveAddresses.country_codes || []).include?(c.code) }
+      Carmen::Country.all.select { |c| (EffectiveAddresses.country_codes || []).include?(c.code) }
     end
 
     if regions.blank? && EffectiveAddresses.country_codes_priority.present?
