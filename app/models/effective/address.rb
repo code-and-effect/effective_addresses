@@ -6,7 +6,7 @@ module Effective
     attr_accessor :shipping_address_same_as_billing
 
     POSTAL_CODE_CA = /\A[A-Z]{1}\d{1}[A-Z]{1}\ \d{1}[A-Z]{1}\d{1}\z/  # Matches 'T5Z 2B1'
-    POSTAL_CODE_US = /\A\d{5}\z/ # Matches 5 digits
+    POSTAL_CODE_US = /\A\d{5}(-\d{4})?\z/ # matches 5 digits plus optional hyphen and 4 digits
 
     belongs_to :addressable, polymorphic: true, touch: true
 
