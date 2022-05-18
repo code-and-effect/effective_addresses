@@ -93,6 +93,7 @@ module Effective
           code = code.insert(3, ' ') if code.length == 6
         elsif country_code == 'US'
           code = code.gsub(/[^0-9]/, '')
+          code = code.insert(5, '-') if code.length == 9
         end
       end
 
