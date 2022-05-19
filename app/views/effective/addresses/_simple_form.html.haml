@@ -10,7 +10,7 @@
 
     - case field
       - when :full_name
-        - if EffectiveAddresses.use_full_name || fa.object.errors.include?(:full_name)
+        - if local_assigns[:use_full_name] || EffectiveAddresses.use_full_name || fa.object.errors.include?(:full_name)
           = fa.input :full_name,
             required: required,
             disabled: shipping_address_same_as_billing,

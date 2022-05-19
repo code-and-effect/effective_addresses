@@ -9,7 +9,7 @@
 
     - case field
       - when :full_name
-        - if EffectiveAddresses.use_full_name || fa.object.errors.include?(:full_name)
+        - if local_assigns[:use_full_name] || EffectiveAddresses.use_full_name || fa.object.errors.include?(:full_name)
           = fa.input :full_name, :required => true, :label => 'Full name', :placeholder => 'Full name'
 
       - when :address1

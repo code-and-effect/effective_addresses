@@ -13,7 +13,7 @@
   = address.address2
   %br
 
-- if address.respond_to?(:address3) && address.address3.present?
+- if address.try(:address3).present?
   = address.address3
   %br
 
