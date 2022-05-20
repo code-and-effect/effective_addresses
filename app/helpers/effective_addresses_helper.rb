@@ -7,6 +7,7 @@ module EffectiveAddressesHelper
     required = (form.object._validators[method.to_sym].any? { |v| v.kind_of?(ActiveRecord::Validations::PresenceValidator) && (v.options[:if].blank? || (v.options[:if].respond_to?(:call) ? f.object.instance_exec(&v.options[:if]) : v.options[:if])) } rescue true)
 
     address = form.object.send(method) || form.object.addresses.build(category: method.to_s.gsub('_address', ''))
+
     effective_address_pre_select(address) if address.new_record?
 
     opts = { required: required, field_order: [:full_name, :address1, :address2, :city, :country_code, :state_code, :postal_code] }.merge(options).merge({:f => form, :address => address, :method => method})
@@ -24,16 +25,23 @@ module EffectiveAddressesHelper
   end
 
   def effective_address_pre_select(address)
-    if EffectiveAddresses.pre_selected_country.present?
-      address.country ||= EffectiveAddresses.pre_selected_country
-      address.state ||= EffectiveAddresses.pre_selected_state if EffectiveAddresses.pre_selected_state.present?
-    elsif defined?(Geocoder) && request.location.present?
+    if address.country.blank? && EffectiveAddresses.pre_selected_country.present?
+      address.country = EffectiveAddresses.pre_selected_country
+    end
+
+    if address.state.blank? && EffectiveAddresses.pre_selected_state.present?
+      address.state = EffectiveAddresses.pre_selected_state
+    end
+
+    if defined?(Geocoder) && request.try(:location).present?
       location = request.location
       address.country = location.country_code
       address.state = location.state_code
       address.postal_code = location.postal_code
       address.city = location.city
     end
+
+    address
   end
 
   def effective_address_regions_collection(regions = nil, resource: nil)
