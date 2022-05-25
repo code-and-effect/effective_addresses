@@ -1,3 +1,3 @@
 module EffectiveAddresses
-  VERSION = '1.9.11'.freeze
+  VERSION = '1.10.0'.freeze
 end
