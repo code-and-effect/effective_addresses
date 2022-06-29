@@ -83,6 +83,8 @@ module ActsAsAddressable
   end
 
   def set_effective_address(category, obj)
+    return if obj.blank?
+
     raise "#{category}_address= expected an Effective::Address or Hash" unless obj.kind_of?(Effective::Address) || obj.kind_of?(Hash)
 
     address = (obj.kind_of?(Effective::Address) ? obj : Effective::Address.new(obj))
@@ -110,6 +112,8 @@ module ActsAsAddressable
   end
 
   def set_singular_effective_address(category, obj)
+    return if obj.blank?
+
     raise "#{category}_address= expected an Effective::Address or Hash" unless obj.kind_of?(Effective::Address) || obj.kind_of?(Hash)
 
     address = (obj.kind_of?(Effective::Address) ? obj : Effective::Address.new(obj))
