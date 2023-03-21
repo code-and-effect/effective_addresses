@@ -10,6 +10,8 @@ module Effective
 
     belongs_to :addressable, polymorphic: true, touch: true
 
+    log_changes(to: :addressable) if respond_to?(:log_changes)
+
     effective_resource do
       category          :string
 
