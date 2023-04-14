@@ -15,6 +15,8 @@ module EffectiveAddressesHelper
     case form.class.name
     when 'Effective::FormBuilder'
       render partial: 'effective/addresses/form_with', locals: opts
+    when 'Effective::TableBuilder'
+      form.effective_address(method, options)
     when 'SimpleForm::FormBuilder'
       render partial: 'effective/addresses/simple_form', locals: opts
     when 'Formtastic::FormBuilder'
