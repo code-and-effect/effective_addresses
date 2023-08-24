@@ -2,7 +2,8 @@
 
 module Effective
   class Address < ActiveRecord::Base
-    self.table_name = EffectiveAddresses.addresses_table_name.to_s
+    self.table_name = (EffectiveAddresses.addresses_table_name || :addresses).to_s
+
     attr_accessor :shipping_address_same_as_billing
 
     POSTAL_CODE_CA = /\A[A-Z]{1}\d{1}[A-Z]{1}\ \d{1}[A-Z]{1}\d{1}\z/  # Matches 'T5Z 2B1'
@@ -146,11 +147,7 @@ module Effective
     end
 
     def shipping_address_same_as_billing?
-      if defined?(::ActiveRecord::ConnectionAdapters::Column::TRUE_VALUES)  # Rails 5
-        ::ActiveRecord::ConnectionAdapters::Column::TRUE_VALUES.include?(shipping_address_same_as_billing)
-      else
-        ::ActiveRecord::Type::Boolean.new.cast(shipping_address_same_as_billing)
-      end
+      EffectiveResources.truthy?(shipping_address_same_as_billing)
     end
   end
 end

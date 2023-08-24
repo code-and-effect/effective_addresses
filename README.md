@@ -10,8 +10,6 @@ Includes a Formtastic and SimpleForm one-liner method to drop in address fields 
 
 Uses the Carmen gem internally so when a Country is selected, an AJAX request populates the province/state fields as appropriate.
 
-Rails 3.2.x and Rails 4 Support
-
 ## Getting Started
 
 Add to your Gemfile:
