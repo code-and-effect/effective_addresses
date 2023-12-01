@@ -15,6 +15,8 @@ module ActsAsAddressable
   included do
     has_many :addresses, -> { order(:updated_at) }, as: :addressable, class_name: 'Effective::Address', dependent: :delete_all, autosave: true
 
+    scope :deep_effective_addresses, -> { includes(:addresses) }
+
     # Normalize categories
     categories = @acts_as_addressable_opts.try(:flatten) || []
 
