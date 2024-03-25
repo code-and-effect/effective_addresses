@@ -1,9 +1,9 @@
 = f.fields_for method, (address || f.object.send(method) || f.object.addresses.build(category: method.to_s.gsub('_address', ''))) do |fa|
   - uuid = fa.object_id
   - method = method.to_sym
-  - same_as_billing = (fa.object.category == 'shipping') && (f.object.try(:shipping_address_same_as_billing?) || false)
+  - same_as_billing = (fa.object.category == 'shipping') && f.object.try(:shipping_address_same_as_billing?)
   - required = (required && !same_as_billing)
-  - wrapper_options = (same_as_billing ? { style: 'display: none;', class: 'form-group shipping_address_form_group' } : {})
+  - wrapper_options = { class: "form-group #{method}_form_group", style: ('display: none;' if same_as_billing) }
 
   - if ((f.object.errors.include?(method) && !f.object.errors.include?(:addresses)) rescue false)
     = f.errors method
