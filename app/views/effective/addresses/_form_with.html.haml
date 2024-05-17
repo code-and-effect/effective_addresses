@@ -15,7 +15,7 @@
       wrapper: wrapper_options
 
   = fa.text_field :address1,
-    label: 'Address',
+    label: (local_assigns[:label] || method.to_s.titleize),
     required: required,
     disabled: same_as_billing,
     wrapper: wrapper_options
