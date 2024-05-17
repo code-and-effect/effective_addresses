@@ -62,12 +62,16 @@ module EffectiveAddressesHelper
     countries = countries.map { |c| [c.name, c.code] }.sort! { |a, b| a.first <=> b.first }
 
     if regions.blank? && EffectiveAddresses.country_codes_priority.present?
-      countries.unshift(*
-        EffectiveAddresses.country_codes_priority.map do |code|
-          country = Carmen::Country.coded(code)
-          [country.name, country.code]
-        end + [['-------------------', '-', disabled: :disabled]]
-      )
+      priorities = EffectiveAddresses.country_codes_priority.map do |code|
+        country = Carmen::Country.coded(code)
+        [country.name, country.code]
+      end
+
+      unless EffectiveAddresses.country_codes.kind_of?(Array)
+        priorities << ['-------------------', '-', disabled: :disabled]
+      end
+
+      countries.unshift(*priorities)
     end
 
     # Special behaviour if the address has CAN, we treat it as CA
