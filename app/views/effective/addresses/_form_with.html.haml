@@ -8,6 +8,13 @@
   - if ((f.object.errors.include?(method) && !f.object.errors.include?(:addresses)) rescue false)
     = f.errors method
 
+  - if fa.object.category == 'shipping' && f.object.respond_to?(:shipping_address_same_as_billing?)
+    = fa.check_box :shipping_address_same_as_billing,
+      label: 'Shipping address is same as billing address',
+      required: false,
+      feedback: false,
+      input_html: { checked: same_as_billing }
+
   - if local_assigns[:use_full_name] || EffectiveAddresses.use_full_name || fa.object.errors.include?(:full_name)
     = fa.text_field :full_name,
       required: required,
@@ -74,10 +81,3 @@
         disabled: same_as_billing,
         input_html: { 'data-effective-address-postal-code' => uuid },
         wrapper: wrapper_options
-
-  - if fa.object.category == 'shipping' && f.object.respond_to?(:shipping_address_same_as_billing?)
-    = fa.check_box :shipping_address_same_as_billing,
-      label: 'Shipping address is same as billing address',
-      required: false,
-      feedback: false,
-      input_html: { checked: same_as_billing }
