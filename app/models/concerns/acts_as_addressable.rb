@@ -95,6 +95,9 @@ module ActsAsAddressable
       address = effective_address('billing')
     end
 
+    # Same as billing was selected, but there is no billing address to copy from yet
+    return if address.blank?
+
     # Prevents duplicates from being created
     return effective_address(category) if address == effective_address(category)
 
@@ -123,6 +126,9 @@ module ActsAsAddressable
     if category == 'shipping' && address.shipping_address_same_as_billing? && respond_to?(:billing_address)
       address = effective_address('billing')
     end
+
+    # Same as billing was selected, but there is no billing address to copy from yet
+    return if address.blank?
 
     # This wouldn't create duplicates anyway
     return effective_address(category) if address == effective_address(category)
