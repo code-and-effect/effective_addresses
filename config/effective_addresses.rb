@@ -8,9 +8,9 @@ EffectiveAddresses.setup do |config|
 
   # Country codes to display in country_select dropdowns.
   config.country_codes = :all
-  #config.country_codes = ['US', 'CA'] # Or you can be more selective...
+  # config.country_codes = ['US', 'CA'] # Or you can be more selective...
 
-  # Select these countries ontop of the others
+  # Select these countries on top of the others
   # config.country_codes_priority = ['US', 'CA']
 
   # Force this country to be preselected on any new address forms.
@@ -19,7 +19,7 @@ EffectiveAddresses.setup do |config|
   config.pre_selected_country = nil
 
   # Force this state to be preselected on any new address forms.
-  # Must also define pre_selected_country for this to take affect
+  # Must also define pre_selected_country for this to take effect
   # Valid values are: state code, state name, or nil.
   # Leave nil if using Geocoder for IP based discovery.
   config.pre_selected_state = nil
