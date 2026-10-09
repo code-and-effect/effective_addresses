@@ -165,6 +165,15 @@ When you select a country from the select input an AJAX GET request will be made
 which populates the province/state dropdown with the selected country's states or provinces.
 
 
+#### Effective Form Builder
+
+Pass `state_label` to customize the state/province label for this form. The default remains `State / Province`.
+
+```haml
+= effective_form_with(model: @user) do |f|
+  = effective_address_fields(f, :billing_address, state_label: 'Province')
+```
+
 #### Formtastic
 
 ```ruby

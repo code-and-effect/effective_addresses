@@ -61,14 +61,14 @@
 
       - if subregions.present?
         = fa.select :state_code, effective_address_regions_collection(subregions),
-          label: 'State / Province',
+          label: (local_assigns[:state_label] || 'State / Province'),
           required: required,
           disabled: same_as_billing,
           input_html: { 'data-effective-address-state' => uuid },
           wrapper: wrapper_options
       - else
         = fa.select :state_code, [],
-          label: 'State / Province',
+          label: (local_assigns[:state_label] || 'State / Province'),
           required: required,
           disabled: true,
           input_html: { 'data-effective-address-state' => uuid },
