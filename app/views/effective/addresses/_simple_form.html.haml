@@ -9,7 +9,7 @@
   - if fa.object.category == 'shipping' && f.object.respond_to?(:shipping_address_same_as_billing?)
     = fa.input :shipping_address_same_as_billing,
       as: :boolean,
-      label: 'Shipping address is same as billing address',
+      label: t('effective_addresses.labels.shipping_address_same_as_billing'),
       required: false,
       input_html: { checked: shipping_address_same_as_billing }
 
@@ -19,13 +19,16 @@
       - when :full_name
         - if local_assigns[:use_full_name] || EffectiveAddresses.use_full_name || fa.object.errors.include?(:full_name)
           = fa.input :full_name,
+            label: t('effective_addresses.labels.full_name'),
+            placeholder: t('effective_addresses.placeholders.full_name'),
             required: required,
             disabled: shipping_address_same_as_billing,
             wrapper_html: { style: ('display: none;' if shipping_address_same_as_billing) }
 
       - when :address1
         = fa.input :address1,
-          label: 'Address',
+          label: (local_assigns[:label] || t('effective_addresses.labels.address1')),
+          placeholder: t('effective_addresses.placeholders.address1'),
           required: required,
           disabled: shipping_address_same_as_billing,
           wrapper_html: { style: ('display: none;' if shipping_address_same_as_billing) }
@@ -39,6 +42,8 @@
 
       - when :city
         = fa.input :city,
+          label: t('effective_addresses.labels.city'),
+          placeholder: t('effective_addresses.placeholders.city'),
           required: required,
           input_html: { 'data-effective-address-city' => uuid },
           disabled: shipping_address_same_as_billing,
@@ -46,6 +51,7 @@
 
       - when :country_code
         = fa.input :country_code,
+          label: t('effective_addresses.labels.country_code'),
           as: (defined?(EffectiveFormInputs) ? :effective_select : :select),
           required: required,
           collection: effective_address_regions_collection(),
@@ -56,27 +62,31 @@
       - when :state_code
         - if fa.object.try(:country_code).present?
           = fa.input :state_code,
+            label: t('effective_addresses.labels.state_code'),
             as: (defined?(EffectiveFormInputs) ? :effective_select : :select),
             required: required,
             collection: effective_address_regions_collection(Carmen::Country.coded(fa.object.country_code).try(:subregions)),
-            prompt: 'Please choose',
+            prompt: t('effective_addresses.prompts.choose'),
             input_html: {'data-effective-address-state' => uuid},
-            input_js: { placeholder: 'Please choose' },
+            input_js: { placeholder: t('effective_addresses.placeholders.choose') },
             disabled: shipping_address_same_as_billing,
             wrapper_html: { style: ('display: none;' if shipping_address_same_as_billing) }
         - else
           = fa.input :state_code,
+            label: t('effective_addresses.labels.state_code'),
             as: (defined?(EffectiveFormInputs) ? :effective_select : :select),
             required: required,
             collection: [],
-            prompt: 'Please choose a country first',
+            prompt: t('effective_addresses.prompts.country_first'),
             input_html: { 'data-effective-address-state' => uuid },
-            input_js: { placeholder: 'Please choose country first' },
+            input_js: { placeholder: t('effective_addresses.placeholders.country_first') },
             disabled: true,
             wrapper_html: { style: ('display: none;' if shipping_address_same_as_billing) }
 
       - when :postal_code
         = fa.input :postal_code,
+          label: t('effective_addresses.labels.postal_code'),
+          placeholder: t('effective_addresses.placeholders.postal_code'),
           required: required,
           input_html: { 'data-effective-address-postal-code' => uuid },
           disabled: shipping_address_same_as_billing,

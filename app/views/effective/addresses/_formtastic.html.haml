@@ -10,10 +10,10 @@
     - case field
       - when :full_name
         - if local_assigns[:use_full_name] || EffectiveAddresses.use_full_name || fa.object.errors.include?(:full_name)
-          = fa.input :full_name, :required => true, :label => 'Full name', :placeholder => 'Full name'
+          = fa.input :full_name, :required => true, :label => t('effective_addresses.labels.full_name'), :placeholder => t('effective_addresses.placeholders.full_name')
 
       - when :address1
-        = fa.input :address1, :placeholder => 'Address', :label => "Address"
+        = fa.input :address1, :placeholder => t('effective_addresses.placeholders.address1'), :label => (local_assigns[:label] || t('effective_addresses.labels.address1'))
 
       - when :address2
         = fa.input :address2, :label => false
@@ -22,34 +22,34 @@
         = fa.input :address3, :label => false
 
       - when :city
-        = fa.input :city, :placeholder => 'City'
+        = fa.input :city, :label => t('effective_addresses.labels.city'), :placeholder => t('effective_addresses.placeholders.city')
 
       - when :country_code
         = fa.input :country_code,
           :as => (defined?(EffectiveFormInputs) ? :effective_select : :select),
-          :label => 'Country',
-          :prompt => 'Country...',
+          :label => t('effective_addresses.labels.country_code'),
+          :prompt => t('effective_addresses.placeholders.country_code'),
           :collection => options_for_select(effective_address_regions_collection()),
           :input_html => { 'data-effective-address-country' => uuid },
-          :input_js => { placeholder: 'Please choose' }
+          :input_js => { placeholder: t('effective_addresses.placeholders.choose') }
 
       - when :state_code
         - if fa.object.country_code.present?
           = fa.input :state_code,
             :as => (defined?(EffectiveFormInputs) ? :effective_select : :select),
-            :label => 'Province / State',
+            :label => t('effective_addresses.labels.state_code'),
             :collection => options_for_select(effective_address_regions_collection(Carmen::Country.coded(fa.object.country_code).try(:subregions))),
-            :prompt => 'please select a country',
+            :prompt => t('effective_addresses.prompts.select_country'),
             :input_html => { 'data-effective-address-state' => uuid },
-            :input_js => { :placeholder => 'Please choose' }
+            :input_js => { :placeholder => t('effective_addresses.placeholders.choose') }
         - else
           = fa.input :state_code,
             :as => (defined?(EffectiveFormInputs) ? :effective_select : :select),
-            :label => 'Province / State',
+            :label => t('effective_addresses.labels.state_code'),
             :collection => [],
-            :prompt => 'please select a country',
+            :prompt => t('effective_addresses.prompts.select_country'),
             :input_html => {:disabled => 'disabled', 'data-effective-address-state' => uuid},
-            :input_js => { :placeholder => 'Please choose country first' }
+            :input_js => { :placeholder => t('effective_addresses.placeholders.country_first') }
 
       - when :postal_code
-        = fa.input :postal_code, :label => 'Postal / Zip code', :placeholder => 'Postal / Zip code'
+        = fa.input :postal_code, :label => t('effective_addresses.labels.postal_code'), :placeholder => t('effective_addresses.placeholders.postal_code')

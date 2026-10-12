@@ -159,7 +159,7 @@ The actual permitted parameters are:
 
 ### Form Helpers
 
-Use the helper in a Formtastic or SimpleForm form to quickly create the address fields. Currently only supports Formtastic and SimpleForm.
+Use `effective_address_fields` with Effective FormBuilder, SimpleForm, or Formtastic to render address fields.
 
 When you select a country from the select input an AJAX GET request will be made to `effective_addresses.address_subregions_path` (`/addresses/subregions/:country_code`)
 which populates the province/state dropdown with the selected country's states or provinces.
@@ -250,12 +250,10 @@ MIT License.  Copyright [Code and Effect Inc.](http://www.codeandeffect.com/)
 
 ## Testing
 
-The test suite for this gem is unfortunately not yet complete.
+Run the test suite from the gem root:
 
-Run tests by:
-
-```ruby
-rake spec
+```console
+bundle exec rake test
 ```
 
 ## Contributing
