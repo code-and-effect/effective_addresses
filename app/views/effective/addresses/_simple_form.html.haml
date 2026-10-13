@@ -51,6 +51,8 @@
           as: (defined?(EffectiveFormInputs) ? :effective_select : :select),
           required: required,
           collection: effective_address_regions_collection(),
+          prompt: t('effective_addresses.prompts.select_country'),
+          input_js: { placeholder: t('effective_addresses.prompts.select_country') },
           input_html: {'data-effective-address-country' => uuid},
           disabled: shipping_address_same_as_billing,
           wrapper_html: { style: ('display: none;' if shipping_address_same_as_billing) }
@@ -62,7 +64,7 @@
             required: required,
             collection: effective_address_regions_collection(Carmen::Country.coded(fa.object.country_code).try(:subregions)),
             prompt: t('effective_addresses.prompts.choose'),
-            input_html: {'data-effective-address-state' => uuid},
+            input_html: effective_address_state_input_html(uuid),
             input_js: { placeholder: t('effective_addresses.placeholders.choose') },
             disabled: shipping_address_same_as_billing,
             wrapper_html: { style: ('display: none;' if shipping_address_same_as_billing) }
@@ -72,7 +74,7 @@
             required: required,
             collection: [],
             prompt: t('effective_addresses.prompts.country_first'),
-            input_html: { 'data-effective-address-state' => uuid },
+            input_html: effective_address_state_input_html(uuid),
             input_js: { placeholder: t('effective_addresses.placeholders.country_first') },
             disabled: true,
             wrapper_html: { style: ('display: none;' if shipping_address_same_as_billing) }

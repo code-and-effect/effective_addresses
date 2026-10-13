@@ -27,25 +27,25 @@
       - when :country_code
         = fa.input :country_code,
           :as => (defined?(EffectiveFormInputs) ? :effective_select : :select),
-          :prompt => t('effective_addresses.placeholders.country_code'),
+          :prompt => t('effective_addresses.prompts.select_country'),
           :collection => options_for_select(effective_address_regions_collection()),
           :input_html => { 'data-effective-address-country' => uuid },
-          :input_js => { placeholder: t('effective_addresses.placeholders.choose') }
+          :input_js => { placeholder: t('effective_addresses.prompts.select_country') }
 
       - when :state_code
         - if fa.object.country_code.present?
           = fa.input :state_code,
             :as => (defined?(EffectiveFormInputs) ? :effective_select : :select),
             :collection => options_for_select(effective_address_regions_collection(Carmen::Country.coded(fa.object.country_code).try(:subregions))),
-            :prompt => t('effective_addresses.prompts.select_country'),
-            :input_html => { 'data-effective-address-state' => uuid },
+            :prompt => t('effective_addresses.prompts.choose'),
+            :input_html => effective_address_state_input_html(uuid),
             :input_js => { :placeholder => t('effective_addresses.placeholders.choose') }
         - else
           = fa.input :state_code,
             :as => (defined?(EffectiveFormInputs) ? :effective_select : :select),
             :collection => [],
-            :prompt => t('effective_addresses.prompts.select_country'),
-            :input_html => {:disabled => 'disabled', 'data-effective-address-state' => uuid},
+            :prompt => t('effective_addresses.prompts.country_first'),
+            :input_html => effective_address_state_input_html(uuid).merge(disabled: 'disabled'),
             :input_js => { :placeholder => t('effective_addresses.placeholders.country_first') }
 
       - when :postal_code

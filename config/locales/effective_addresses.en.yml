@@ -13,6 +13,13 @@ en:
         state_code: Province
         postal_code: Postal Code
         shipping_address_same_as_billing: Shipping address is the same as the billing address
+    errors:
+      models:
+        effective/address:
+          attributes:
+            postal_code:
+              invalid_canadian_postal_code: is an invalid Canadian postal code
+              invalid_us_zip_code: is an invalid United States zip code
   attributes:
     billing_address: Billing Address
     shipping_address: Shipping Address
@@ -26,6 +33,8 @@ en:
       country_code: Country
       choose: Select...
       country_first: Select a country first...
+      loading: Loading...
+      none: None available
     prompts:
       choose: Select...
       country_first: Select a country first...

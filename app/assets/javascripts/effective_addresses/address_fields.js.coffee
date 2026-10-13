@@ -1,7 +1,7 @@
 loadSubregions = ($countrySelect, clearPostalCode = false) ->
   $.each $countrySelect, (index, countrySelector) ->
     $particularCountrySelect = $(countrySelector)
-    countryCode = $particularCountrySelect.val()
+    countryCode = $particularCountrySelect.val() || ''
     uuid = $particularCountrySelect.data('effective-address-country')
 
     $nestedFields = $particularCountrySelect.closest('.nested-fields')
@@ -16,34 +16,45 @@ loadSubregions = ($countrySelect, clearPostalCode = false) ->
     url = "/addresses/subregions/#{countryCode}"
     $stateSelect = $container.find("select[data-effective-address-state='#{uuid}']:first")
 
+    return unless $stateSelect.length
+    prompts = $stateSelect.data('effective-address-prompts') || {}
+    fallback = $stateSelect.data('input-js-options')?.placeholder || $stateSelect.find("option[value='']").text()
+
     if countryCode.length == 0
       $stateSelect.prop('disabled', true).addClass('disabled').parent('.form-group').addClass('disabled').find('label').addClass('disabled')
-      reinitialize($stateSelect, 'Please choose country first')
+      reinitialize($stateSelect, prompts.country_first || fallback)
     else
       $stateSelect.removeAttr('disabled').parent('.form-group').removeClass('disabled').find('.disabled').removeClass('disabled')
-      reinitialize($stateSelect, 'Loading...')
+      reinitialize($stateSelect, prompts.loading || fallback)
 
       $stateSelect.load url, ->
-        stateSelectAvailable = $(@).find('option:last').val().length > 0
+        stateSelectAvailable = ($(@).find('option:last').val() || '').length > 0
         if stateSelectAvailable
           $(@).prop('required', true)
           $(@).removeAttr('disabled')
-          reinitialize($stateSelect, 'Please choose', true)
+          reinitialize($stateSelect, prompts.choose || fallback, true)
         else
           $(@).removeAttr('required')
           $(@).prop('disabled', true)
-          reinitialize($stateSelect, 'None exist', true)
+          reinitialize($stateSelect, prompts.none || fallback, true)
 
 $(document).on 'change', 'select[data-effective-address-country]', -> loadSubregions($(@), true)
 
 reinitialize = ($stateSelect, placeholder, keepOptions = false) ->
   if $stateSelect.hasClass('effective_select') == false
-    $stateSelect.html("<option value=''>#{placeholder}</option>") unless keepOptions
+    $stateSelect.empty() unless keepOptions
+    $prompt = $stateSelect.find("option[value='']").first()
+    if $prompt.length
+      $prompt.text(placeholder)
+    else
+      $stateSelect.prepend($('<option>').val('').text(placeholder))
+    $stateSelect.val('')
     return
 
   $stateSelect.html('') unless keepOptions
+  $stateSelect.val('')
 
-  opts = $stateSelect.data('input-js-options')
+  opts = $stateSelect.data('input-js-options') || {}
   opts['placeholder'] = placeholder
   $stateSelect.data('input-js-options', opts)
 

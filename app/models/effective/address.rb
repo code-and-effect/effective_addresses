@@ -37,12 +37,12 @@ module Effective
     validates_format_of :postal_code, :with => POSTAL_CODE_CA,
       :if => proc { |address| Array(EffectiveAddresses.validate_postal_code_format).include?('CA') && address.country_code == 'CA' },
       :allow_blank => true,  # We're already checking for presence above
-      :message => 'is an invalid Canadian postal code'
+      :message => :invalid_canadian_postal_code
 
     validates_format_of :postal_code, :with => POSTAL_CODE_US,
       :if => proc { |address| Array(EffectiveAddresses.validate_postal_code_format).include?('US') && address.country_code == 'US' },
       :allow_blank => true,  # We're already checking for presence above
-      :message => 'is an invalid United States zip code'
+      :message => :invalid_us_zip_code
 
     scope :sorted, -> { order(:updated_at) }
     scope :billing, -> { where(:category => 'billing') }

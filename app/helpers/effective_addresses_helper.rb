@@ -26,6 +26,18 @@ module EffectiveAddressesHelper
     end
   end
 
+  def effective_address_state_input_html(uuid)
+    {
+      'data-effective-address-state' => uuid,
+      'data-effective-address-prompts' => {
+        country_first: t('effective_addresses.placeholders.country_first'),
+        loading: t('effective_addresses.placeholders.loading'),
+        choose: t('effective_addresses.placeholders.choose'),
+        none: t('effective_addresses.placeholders.none')
+      }.to_json
+    }
+  end
+
   def effective_address_pre_select(address)
     if address.country.blank? && EffectiveAddresses.pre_selected_country.present?
       address.country = EffectiveAddresses.pre_selected_country

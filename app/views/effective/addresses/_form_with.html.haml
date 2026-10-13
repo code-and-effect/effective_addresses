@@ -52,6 +52,7 @@
         required: required,
         disabled: same_as_billing,
         input_html: { 'data-effective-address-country' => uuid },
+        input_js: { placeholder: t('effective_addresses.prompts.select_country') },
         wrapper: wrapper_options
 
     .col-md-5
@@ -61,13 +62,14 @@
         = fa.select :state_code, effective_address_regions_collection(subregions),
           required: required,
           disabled: same_as_billing,
-          input_html: { 'data-effective-address-state' => uuid },
+          input_html: effective_address_state_input_html(uuid),
+          input_js: { placeholder: t('effective_addresses.placeholders.choose') },
           wrapper: wrapper_options
       - else
         = fa.select :state_code, [],
           required: required,
           disabled: true,
-          input_html: { 'data-effective-address-state' => uuid },
+          input_html: effective_address_state_input_html(uuid),
           input_js: { placeholder: t('effective_addresses.placeholders.country_first') },
           wrapper: wrapper_options
 
