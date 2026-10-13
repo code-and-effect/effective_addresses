@@ -1,18 +1,23 @@
 en:
+  activerecord:
+    models:
+      effective/address: Address
+    attributes:
+      effective/address:
+        full_name: Full name
+        address1: Address
+        address2: Address 2
+        address3: Address 3
+        city: City
+        country_code: Country
+        state_code: Province
+        postal_code: Postal Code
+        shipping_address_same_as_billing: Shipping address is the same as the billing address
+  attributes:
+    billing_address: Billing Address
+    shipping_address: Shipping Address
+    reference_address: Reference Address
   effective_addresses:
-    labels:
-      full_name: Full name
-      address1: Address
-      address2: Address 2
-      address3: Address 3
-      city: City
-      country_code: Country
-      state_code: Province
-      postal_code: Postal Code
-      billing_address: Billing Address
-      shipping_address: Shipping Address
-      reference_address: Reference Address
-      shipping_address_same_as_billing: Shipping address is the same as the billing address
     placeholders:
       full_name: Full name
       address1: Address

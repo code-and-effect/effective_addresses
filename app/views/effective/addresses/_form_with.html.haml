@@ -11,20 +11,18 @@
 
   - if !skip_same_as_billing && fa.object.category == 'shipping' && f.object.respond_to?(:shipping_address_same_as_billing?)
     = fa.check_box :shipping_address_same_as_billing,
-      label: t('effective_addresses.labels.shipping_address_same_as_billing'),
       required: false,
       feedback: false,
       input_html: { checked: same_as_billing }
 
   - if local_assigns[:use_full_name] || EffectiveAddresses.use_full_name || fa.object.errors.include?(:full_name)
     = fa.text_field :full_name,
-      label: t('effective_addresses.labels.full_name'),
       required: required,
       disabled: same_as_billing,
       wrapper: wrapper_options
 
   = fa.text_field :address1,
-    label: (local_assigns[:label] || t("effective_addresses.labels.#{method}", default: method.to_s.titleize)),
+    label: (local_assigns[:label] || f.object.class.human_attribute_name(method, default: method.to_s.titleize)),
     required: required,
     disabled: same_as_billing,
     wrapper: wrapper_options
@@ -43,7 +41,6 @@
       wrapper: wrapper_options
 
   = fa.text_field :city,
-    label: t('effective_addresses.labels.city'),
     required: required,
     disabled: same_as_billing,
     input_html: { 'data-effective-address-city' => uuid },
@@ -52,7 +49,6 @@
   .row
     .col-md-4
       = fa.select :country_code, effective_address_regions_collection(resource: fa.object),
-        label: t('effective_addresses.labels.country_code'),
         required: required,
         disabled: same_as_billing,
         input_html: { 'data-effective-address-country' => uuid },
@@ -63,14 +59,12 @@
 
       - if subregions.present?
         = fa.select :state_code, effective_address_regions_collection(subregions),
-          label: t('effective_addresses.labels.state_code'),
           required: required,
           disabled: same_as_billing,
           input_html: { 'data-effective-address-state' => uuid },
           wrapper: wrapper_options
       - else
         = fa.select :state_code, [],
-          label: t('effective_addresses.labels.state_code'),
           required: required,
           disabled: true,
           input_html: { 'data-effective-address-state' => uuid },
@@ -79,7 +73,6 @@
 
     .col-md-3
       = fa.text_field :postal_code,
-        label: t('effective_addresses.labels.postal_code'),
         required: required,
         disabled: same_as_billing,
         input_html: { 'data-effective-address-postal-code' => uuid },
