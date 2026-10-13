@@ -7,21 +7,21 @@ en:
       address3: Address 3
       city: City
       country_code: Country
-      state_code: State / Province
+      state_code: Province
       postal_code: Postal Code
       billing_address: Billing Address
       shipping_address: Shipping Address
       reference_address: Reference Address
-      shipping_address_same_as_billing: Shipping address is same as billing address
+      shipping_address_same_as_billing: Shipping address is the same as the billing address
     placeholders:
       full_name: Full name
       address1: Address
       city: City
-      postal_code: Postal / Zip code
-      country_code: Country...
-      choose: Please choose
-      country_first: Please choose country first
+      postal_code: Postal Code
+      country_code: Country
+      choose: Select...
+      country_first: Select a country first...
     prompts:
-      choose: Please choose
-      country_first: Please choose a country first
-      select_country: please select a country
+      choose: Select...
+      country_first: Select a country first...
+      select_country: Select a country...
