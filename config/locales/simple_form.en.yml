@@ -1,26 +1,13 @@
 en:
   simple_form:
-    labels:
-      defaults:
-        full_name: Full name
-        address1: Address 1
-        address2: Address 2
-        address3: Address 3
-        country_code: Country
-        state_code: Province / State
-        postal_code: Postal / Zip code
-
-#    hints:
-#      defaults:
-
     placeholders:
       defaults:
         full_name: Full name
         address1: Address
         city: City
-        postal_code: Postal / Zip code
+        postal_code: Postal Code
 
     prompts:
       defaults:
-        country_code: Choose country...
-        state_code: Please choose country first
+        country_code: Select a country...
+        state_code: Select a country first...

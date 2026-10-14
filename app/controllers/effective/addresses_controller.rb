@@ -8,7 +8,7 @@ module Effective
       if @subregions.present?
         render partial: 'effective/addresses/subregions'
       else
-        render body: "<option value=''>None Available</option>"
+        render html: helpers.content_tag(:option, t('effective_addresses.placeholders.none'), value: '')
       end
     end
   end

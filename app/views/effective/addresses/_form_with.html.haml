@@ -11,7 +11,6 @@
 
   - if !skip_same_as_billing && fa.object.category == 'shipping' && f.object.respond_to?(:shipping_address_same_as_billing?)
     = fa.check_box :shipping_address_same_as_billing,
-      label: 'Shipping address is same as billing address',
       required: false,
       feedback: false,
       input_html: { checked: same_as_billing }
@@ -23,7 +22,7 @@
       wrapper: wrapper_options
 
   = fa.text_field :address1,
-    label: (local_assigns[:label] || method.to_s.titleize),
+    label: (local_assigns[:label] || f.object.class.human_attribute_name(method, default: method.to_s.titleize)),
     required: required,
     disabled: same_as_billing,
     wrapper: wrapper_options
@@ -50,10 +49,10 @@
   .row
     .col-md-4
       = fa.select :country_code, effective_address_regions_collection(resource: fa.object),
-        label: 'Country',
         required: required,
         disabled: same_as_billing,
         input_html: { 'data-effective-address-country' => uuid },
+        input_js: { placeholder: t('effective_addresses.prompts.select_country') },
         wrapper: wrapper_options
 
     .col-md-5
@@ -61,23 +60,21 @@
 
       - if subregions.present?
         = fa.select :state_code, effective_address_regions_collection(subregions),
-          label: 'State / Province',
           required: required,
           disabled: same_as_billing,
-          input_html: { 'data-effective-address-state' => uuid },
+          input_html: effective_address_state_input_html(uuid),
+          input_js: { placeholder: t('effective_addresses.placeholders.choose') },
           wrapper: wrapper_options
       - else
         = fa.select :state_code, [],
-          label: 'State / Province',
           required: required,
           disabled: true,
-          input_html: { 'data-effective-address-state' => uuid },
-          input_js: { placeholder: 'Please choose country first' },
+          input_html: effective_address_state_input_html(uuid),
+          input_js: { placeholder: t('effective_addresses.placeholders.country_first') },
           wrapper: wrapper_options
 
     .col-md-3
       = fa.text_field :postal_code,
-        label: 'Postal Code',
         required: required,
         disabled: same_as_billing,
         input_html: { 'data-effective-address-postal-code' => uuid },
